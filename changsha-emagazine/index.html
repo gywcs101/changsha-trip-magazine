@@ -1,0 +1,541 @@
+<!doctype html>
+<html lang="zh-CN" data-page-theme>
+<head>
+<meta charset="utf-8">
+<title>山水洲城 · 长沙漫游志 Vol.01</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* ============================================================
+   山水洲城 · 长沙电子杂志   (Editorial Magazine × E-ink)
+   单文件：整屏翻页 + 滚动吸附 · 沉浸式动效 · 完整微调
+   ============================================================ */
+
+/* ---- 6 palettes (per-page via data-theme) ---- */
+[data-theme="ink-classic"]{--paper:#f3f0e8;--paper-2:#ebe6da;--ink:#0a0a0b;--muted:#68625a;--line:rgba(10,10,11,.22);--accent:#111;--accent-soft:#d8d2c6;--ink-rgb:10,10,11;--paper-rgb:243,240,232;--accent-rgb:17,17,17;}
+[data-theme="indigo-porcelain"]{--paper:#f2f4f5;--paper-2:#e5ebef;--ink:#0a1f3d;--muted:#5f6d78;--line:rgba(10,31,61,.20);--accent:#315d93;--accent-soft:#d7e1ec;--ink-rgb:10,31,61;--paper-rgb:242,244,245;--accent-rgb:49,93,147;}
+[data-theme="forest-ink"]{--paper:#f5f1e8;--paper-2:#e8dfcf;--ink:#16251b;--muted:#5d665d;--line:rgba(22,37,27,.22);--accent:#2e6b4f;--accent-soft:#d4dfd2;--ink-rgb:22,37,27;--paper-rgb:245,241,232;--accent-rgb:46,107,79;}
+[data-theme="kraft-paper"]{--paper:#eedfc7;--paper-2:#dfc9a8;--ink:#2a1e13;--muted:#755f49;--line:rgba(42,30,19,.24);--accent:#9b5a2e;--accent-soft:#d5b58f;--ink-rgb:42,30,19;--paper-rgb:238,223,199;--accent-rgb:155,90,46;}
+[data-theme="dune"]{--paper:#f0e6d2;--paper-2:#ded0b7;--ink:#1f1a14;--muted:#6f6557;--line:rgba(31,26,20,.22);--accent:#8f7650;--accent-soft:#d4c2a4;--ink-rgb:31,26,20;--paper-rgb:240,230,210;--accent-rgb:143,118,80;}
+[data-theme="midnight-ink"]{--paper:#0e0d0c;--paper-2:#1a1714;--ink:#ece2cf;--muted:#9a8c75;--line:rgba(236,226,207,.22);--accent:#d4a04a;--accent-soft:#3a2a14;--ink-rgb:236,226,207;--paper-rgb:14,13,12;--accent-rgb:212,160,74;}
+
+:root{
+  --serif-zh:"Noto Serif SC","Songti SC","STSong",serif;
+  --serif-en:"Playfair Display","Noto Serif SC",serif;
+  --sans-zh:"Noto Sans SC",-apple-system,"PingFang SC","Microsoft YaHei UI",sans-serif;
+  --sans-en:"Inter",-apple-system,BlinkMacSystemFont,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Consolas,monospace;
+}
+
+*,*::before,*::after{box-sizing:border-box;}
+html,body{margin:0;padding:0;height:100%;}
+body{background:#0b0b0d;font-family:var(--sans-zh);overflow:hidden;}
+
+/* ---- scroll-snap deck ---- */
+.emag{height:100vh;height:100dvh;overflow-y:scroll;scroll-snap-type:y mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;}
+.emag::-webkit-scrollbar{width:0;height:0;}
+.page{position:relative;height:100vh;height:100dvh;scroll-snap-align:start;overflow:hidden;background:var(--paper);color:var(--ink);isolation:isolate;}
+.wrap{position:relative;z-index:3;height:100%;width:100%;max-width:1180px;margin:0 auto;
+  padding:clamp(40px,7vh,86px) clamp(28px,6vw,96px);display:flex;flex-direction:column;}
+
+/* ---- atmosphere layers ---- */
+.atmo{position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:
+   radial-gradient(72% 56% at 16% 14%,rgba(var(--ink-rgb),.10),transparent 60%),
+   radial-gradient(82% 62% at 86% 88%,rgba(var(--accent-rgb),.13),transparent 64%);
+  animation:drift 26s ease-in-out infinite alternate;}
+@keyframes drift{from{transform:translate3d(0,0,0) scale(1);}to{transform:translate3d(-2.2%,1.6%,0) scale(1.06);}}
+.grain{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.34;mix-blend-mode:multiply;
+  background-image:radial-gradient(rgba(0,0,0,.05) 1px,transparent 1px);background-size:3px 3px;}
+.inkfx{position:absolute;inset:0;z-index:1;pointer-events:none;}
+[data-theme="midnight-ink"] .grain{opacity:.28;mix-blend-mode:screen;background-image:radial-gradient(rgba(255,244,214,.10) 1px,transparent 1px);}
+[data-theme="midnight-ink"] .atmo{background:
+   radial-gradient(80% 50% at 26% 14%,rgba(212,160,74,.18),transparent 62%),
+   radial-gradient(70% 60% at 82% 86%,rgba(60,40,20,.42),transparent 70%),
+   linear-gradient(180deg,rgba(236,226,207,.02),rgba(0,0,0,.34));}
+
+/* ---- full-bleed photo pages ---- */
+.bleed{position:absolute;inset:0;z-index:0;overflow:hidden;}
+.bleed img{width:100%;height:100%;object-fit:cover;object-position:var(--op,center);transform:scale(1.12);will-change:transform;}
+.scrim{position:absolute;inset:0;z-index:1;pointer-events:none;}
+.scrim.top{background:linear-gradient(180deg,rgba(0,0,0,.52),rgba(0,0,0,.14) 34%,transparent 60%);}
+.scrim.bottom{background:linear-gradient(0deg,rgba(0,0,0,.62),rgba(0,0,0,.16) 36%,transparent 64%);}
+.scrim.left{background:linear-gradient(90deg,rgba(0,0,0,.60),rgba(0,0,0,.18) 38%,transparent 66%);}
+.page.is-bleed{color:#f3ead8;}
+.page.is-bleed .kicker,.page.is-bleed .meta,.page.is-bleed .label{color:rgba(243,234,216,.86);}
+.page.is-bleed .h-display,.page.is-bleed .h-xl,.page.is-bleed .lead,.page.is-bleed .pullquote{color:#f5ecdb;}
+.page.is-bleed .accent-line{background:var(--accent);}
+
+/* ---- typography ---- */
+.kicker{font-family:var(--mono);font-size:clamp(12px,1.05vw,21px);letter-spacing:.26em;text-transform:uppercase;color:rgba(var(--ink-rgb),.58);margin:0;}
+.h-display{font-family:var(--serif-zh);font-weight:500;font-size:clamp(44px,8.4vw,128px);line-height:1.05;letter-spacing:.03em;margin:0;color:var(--ink);}
+.h-xl{font-family:var(--serif-zh);font-weight:500;font-size:clamp(34px,5.4vw,84px);line-height:1.1;letter-spacing:.03em;margin:0;color:var(--ink);}
+.h-md{font-family:var(--serif-zh);font-weight:500;font-size:clamp(24px,3vw,52px);line-height:1.2;letter-spacing:.02em;margin:0;color:var(--ink);}
+.h-sub{font-family:var(--serif-en);font-style:italic;font-weight:400;font-size:clamp(18px,2.1vw,38px);color:var(--muted);margin:0;}
+.lead{font-family:var(--serif-zh);font-weight:400;font-size:clamp(17px,1.6vw,30px);line-height:1.62;color:rgba(var(--ink-rgb),.84);margin:0;}
+.body{font-family:var(--serif-zh);font-weight:400;font-size:clamp(15px,1.25vw,24px);line-height:1.72;color:rgba(var(--ink-rgb),.80);margin:0;}
+.meta{font-family:var(--mono);font-size:clamp(11px,.95vw,19px);letter-spacing:.2em;text-transform:uppercase;color:rgba(var(--ink-rgb),.56);}
+.label{font-family:var(--mono);font-size:clamp(11px,.9vw,18px);letter-spacing:.2em;text-transform:uppercase;color:rgba(var(--ink-rgb),.55);}
+.pullquote{font-family:var(--serif-zh);font-style:italic;font-weight:500;font-size:clamp(30px,4.6vw,76px);line-height:1.32;color:var(--ink);margin:0;}
+.em{color:var(--accent);font-style:normal;}
+.accent-line{height:3px;width:clamp(56px,6vw,104px);background:var(--accent);border:0;}
+.rule{height:1px;background:var(--line);border:0;width:100%;}
+
+/* ---- 断行：标题均衡、正文避免孤字尾行（不留一两个字单独一行）---- */
+.h-display,.h-xl,.h-md,.h-sub,.pullquote{text-wrap:balance;}
+.lead,.body,.callout,.toc-t,.led-t,.h-display,.h-xl,.h-md{overflow-wrap:break-word;}
+.lead,.body,.callout{text-wrap:pretty;}
+
+/* ---- structural helpers ---- */
+.spacer{flex:1 1 auto;}
+.row{display:flex;}.col{display:flex;flex-direction:column;}
+.between{justify-content:space-between;}.center-y{align-items:center;}.end-y{align-items:flex-end;}
+.gap-s{gap:14px;}.gap-m{gap:26px;}.gap-l{gap:44px;}
+.issue-row{display:flex;align-items:center;gap:16px;font-family:var(--mono);font-size:clamp(12px,1vw,20px);letter-spacing:.16em;text-transform:uppercase;color:var(--muted);}
+.issue-row .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);}
+
+/* contents */
+.toc{display:flex;flex-direction:column;}
+.toc-item{display:grid;grid-template-columns:auto 1fr auto;gap:clamp(18px,2.4vw,40px);align-items:baseline;padding:clamp(16px,2.4vh,30px) 0;border-bottom:1px solid var(--line);}
+.toc-no{font-family:var(--mono);font-size:clamp(15px,1.5vw,26px);color:var(--accent);}
+.toc-t{font-family:var(--serif-zh);font-weight:500;font-size:clamp(22px,2.7vw,46px);color:var(--ink);}
+.toc-t small{display:block;font-family:var(--serif-en);font-style:italic;font-weight:400;font-size:.42em;color:var(--muted);margin-top:.3em;letter-spacing:.02em;}
+.toc-d{font-family:var(--mono);font-size:clamp(11px,.95vw,18px);letter-spacing:.16em;text-transform:uppercase;color:var(--muted);white-space:nowrap;}
+.toc-thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(8px,1vw,16px);}
+.toc-thumbs figure{margin:0;aspect-ratio:3/4;overflow:hidden;background:var(--paper-2);}
+.toc-thumbs img{width:100%;height:100%;object-fit:cover;}
+
+/* image wells */
+figure{margin:0;}
+.frame{position:relative;overflow:hidden;background:var(--paper-2);display:block;}
+.frame img{width:100%;height:100%;object-fit:cover;object-position:var(--op,center);display:block;}
+.r-34{aspect-ratio:3/4;}.r-43{aspect-ratio:4/3;}.r-11{aspect-ratio:1/1;}.r-169{aspect-ratio:16/9;}.r-32{aspect-ratio:3/2;}
+.cap{font-family:var(--mono);font-size:clamp(10px,.85vw,16px);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:12px;}
+[data-theme="midnight-ink"] .frame{box-shadow:0 0 0 1px rgba(236,226,207,.12);background:#18120f;}
+
+/* split layouts */
+.split{display:grid;gap:clamp(28px,4vw,64px);align-items:center;}
+.split.s-75{grid-template-columns:1.35fr 1fr;}
+.split.s-57{grid-template-columns:1fr 1.35fr;}
+@media(max-width:780px){.split{grid-template-columns:1fr!important;}.toc-thumbs{grid-template-columns:repeat(2,1fr);}}
+
+/* marginalia */
+.marginalia{display:grid;grid-template-columns:1fr clamp(160px,18vw,250px);gap:clamp(28px,4vw,56px);}
+.mg-col{border-left:1px solid var(--line);padding-left:22px;display:flex;flex-direction:column;gap:14px;}
+.mg-col p{font-family:var(--mono);font-size:clamp(11px,.95vw,19px);letter-spacing:.04em;color:var(--muted);margin:0;line-height:1.5;}
+@media(max-width:780px){.marginalia{grid-template-columns:1fr;}.mg-col{border-left:0;border-top:1px solid var(--line);padding-left:0;padding-top:18px;}}
+
+/* artifact ledger */
+.ledger{display:flex;flex-direction:column;}
+.led-row{display:grid;grid-template-columns:auto 1fr auto;gap:clamp(16px,2vw,32px);align-items:baseline;padding:clamp(12px,1.8vh,22px) 0;border-bottom:1px solid var(--line);}
+.led-no{font-family:var(--mono);font-size:clamp(12px,1.1vw,22px);color:var(--accent);}
+.led-t{font-family:var(--serif-zh);font-weight:500;font-size:clamp(19px,1.9vw,34px);color:var(--ink);}
+.led-d{font-family:var(--mono);font-size:clamp(10px,.9vw,17px);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);white-space:nowrap;}
+
+/* evidence wall (dark gallery) */
+.wall{display:grid;grid-template-columns:1.1fr 1fr;grid-template-rows:1fr 1fr;gap:clamp(10px,1.4vw,22px);height:100%;}
+.wall .big{grid-row:1/3;}
+.wall figure{margin:0;overflow:hidden;position:relative;}
+.wall img{width:100%;height:100%;object-fit:cover;}
+@media(max-width:780px){.wall{grid-template-columns:1fr 1fr;grid-template-rows:auto;}.wall .big{grid-row:auto;grid-column:1/3;aspect-ratio:16/10;}.wall figure{aspect-ratio:4/3;}}
+
+/* callout */
+.callout{border-left:3px solid var(--accent);padding:18px 26px;background:var(--paper-2);font-family:var(--serif-zh);font-style:italic;font-size:clamp(18px,1.9vw,34px);line-height:1.4;color:var(--ink);}
+.callout small{display:block;margin-top:14px;font-style:normal;font-family:var(--mono);font-size:clamp(11px,.9vw,18px);letter-spacing:.12em;color:var(--muted);}
+
+/* ===== reveal + char animation ===== */
+.reveal{opacity:0;transform:translateY(30px);filter:blur(7px);transition:opacity .95s cubic-bezier(.19,.7,.2,1),transform .95s cubic-bezier(.19,.7,.2,1),filter .95s;}
+.page.active .reveal.is-in{opacity:1;transform:none;filter:none;}
+.ch{display:inline-block;opacity:0;transform:translateY(.5em) rotateX(46deg);transform-origin:bottom;transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1);}
+.ch.sp{width:.34em;}
+.charfx.is-in .ch{opacity:1;transform:none;}
+
+/* ===== fixed UI ===== */
+.ui{position:fixed;z-index:60;font-family:var(--sans-en);}
+.topbar{top:0;left:0;right:0;height:56px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 18px;background:linear-gradient(180deg,rgba(12,12,14,.62),transparent);color:#f3ead8;pointer-events:none;}
+.topbar .brand{font-family:var(--serif-en);font-style:italic;font-size:17px;letter-spacing:.02em;text-shadow:0 1px 8px rgba(0,0,0,.4);}
+
+/* page dots */
+.dots{right:16px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:11px;pointer-events:auto;}
+.dots b{width:9px;height:9px;border-radius:50%;background:rgba(150,150,150,.5);cursor:pointer;transition:all .3s;position:relative;}
+.dots b.on{background:#d4a04a;transform:scale(1.5);box-shadow:0 0 0 3px rgba(212,160,74,.22);}
+.dots b::after{content:attr(data-l);position:absolute;right:18px;top:50%;transform:translateY(-50%);
+  font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:#f3ead8;background:rgba(12,12,14,.66);
+  padding:3px 7px;border-radius:2px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s;}
+.dots b:hover::after{opacity:1;}
+.progress{left:0;right:0;bottom:0;height:3px;background:rgba(255,255,255,.08);pointer-events:none;}
+.progress i{display:block;height:100%;width:0;background:#d4a04a;transition:width .25s;}
+
+/* hint toast */
+.hint{left:50%;bottom:30px;transform:translateX(-50%);background:rgba(12,12,14,.72);color:#f3ead8;
+  font-family:var(--mono);font-size:12px;letter-spacing:.08em;padding:10px 16px;border-radius:3px;
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);transition:opacity .6s;}
+
+@media(max-width:560px){.dots{display:none;}.topbar .brand{display:none;}}
+</style>
+</head>
+<body>
+<main class="emag" id="deck">
+
+  <!-- ============ P1 · 封面 · 杜甫江阁黄昏 (Midnight Ink) ============ -->
+  <section class="page is-bleed" data-theme="midnight-ink" data-label="封面">
+    <div class="bleed"><img data-par src="../杜甫草堂/d792ef180f1fee905dbe1dcb5202baa3.jpg" style="--op:center 60%" alt="杜甫江阁 黄昏剪影"></div>
+    <div class="scrim top"></div><div class="scrim bottom"></div>
+    <div class="wrap col between">
+      <div class="issue-row reveal"><span>Vol.01</span><span class="dot"></span><span>2026 · 长沙</span><span class="dot"></span><span>山水洲城</span></div>
+      <div class="col gap-m" style="margin-top:auto">
+        <p class="kicker reveal">长沙 · 一日漫游志　CHANGSHA FIELD JOURNAL</p>
+        <h1 class="h-display charfx">山水洲城</h1>
+        <p class="h-sub reveal">A river that splits the city, and stitches it back.</p>
+        <hr class="accent-line reveal" style="margin-top:8px">
+        <p class="lead reveal" style="max-width:18em">一江穿城，一洲卧水。<br>半城烟火，半城是诗——<br>这一日，我们沿着湘江走一遍。</p>
+      </div>
+      <div class="meta reveal" style="margin-top:28px">向下滚动 · SCROLL · 杜甫江阁的黄昏</div>
+    </div>
+  </section>
+
+  <!-- ============ P2 · 卷首 / 目录 (Ink Classic) ============ -->
+  <section class="page" data-theme="ink-classic" data-label="卷首">
+    <div class="atmo"></div><div class="inkfx"></div><div class="grain"></div>
+    <div class="wrap col">
+      <div class="issue-row reveal"><span>卷首 · Foreword</span><span class="dot"></span><span>Vol.01</span></div>
+      <div class="split s-57 gap-l" style="margin-top:clamp(20px,4vh,48px);flex:1 1 auto;align-content:center">
+        <div class="col gap-m">
+          <h2 class="h-xl reveal" style="font-size:clamp(32px,4.4vw,54px)">一座被江水<br>分开又缝合的城</h2>
+          <p class="body reveal">湘江自南向北穿城而过，把长沙剖成两半：东岸是火宫殿的烟火与国金的霓虹，西岸是岳麓的青翠与橘洲的苍茫。古与今、雅与俗，都被这条江温柔地缝在一起。</p>
+          <p class="body reveal">这一期，我们只走一日：从清晨苍茫的雕像，到深夜亮起金光的江阁，再回到博物院里沉睡两千年的器物。四个章节，四种颜色，一条江。</p>
+          <hr class="accent-line reveal">
+        </div>
+        <div class="col gap-m">
+          <p class="label reveal">本期目录 · Contents</p>
+          <div class="toc">
+            <div class="toc-item reveal"><span class="toc-no">01</span><span class="toc-t">橘子洲头<small>Where the river asks</small></span><span class="toc-d">墨绿 / FOREST</span></div>
+            <div class="toc-item reveal"><span class="toc-no">02</span><span class="toc-t">国金天台<small>Giants in the clouds</small></span><span class="toc-d">靛蓝 / INDIGO</span></div>
+            <div class="toc-item reveal"><span class="toc-no">03</span><span class="toc-t">杜甫江阁<small>Falling petals, again</small></span><span class="toc-d">午夜 / MIDNIGHT</span></div>
+            <div class="toc-item reveal"><span class="toc-no">04</span><span class="toc-t">湖南博物院<small>Two thousand years</small></span><span class="toc-d">牛皮 / KRAFT</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="row between reveal" style="margin-top:auto"><span class="meta">摄影 · 你</span><span class="meta">编排 · 山水洲城编辑部</span></div>
+    </div>
+  </section>
+
+  <!-- ============ P3 · Ch.1 橘子洲头 · hero (Forest Ink) ============ -->
+  <section class="page is-bleed" data-theme="forest-ink" data-label="橘子洲·一">
+    <div class="bleed"><img data-par src="../橘子洲头/9eed0b1bdca5094c88edb49d9b1e6997.jpg" style="--op:center 30%" alt="青年毛泽东艺术雕塑"></div>
+    <div class="scrim top"></div><div class="scrim bottom"></div>
+    <div class="wrap col between">
+      <p class="kicker reveal">Chapter 01 · 橘子洲头</p>
+      <div class="col gap-m" style="margin-top:auto">
+        <h2 class="h-display charfx">问苍茫大地</h2>
+        <p class="pullquote reveal" style="font-size:clamp(20px,2.4vw,40px);max-width:16em;text-wrap:wrap">“独立寒秋，湘江北去，橘子洲头。<br><span class="em">看万山红遍，层林尽染。</span>”</p>
+        <p class="lead reveal" style="max-width:16em">青年毛泽东艺术雕塑高约三十二米。<br>他望向湘江北去的方向，<br>像替一百年前那句“谁主沉浮”，<br>继续等一个答案。</p>
+      </div>
+      <div class="meta reveal" style="margin-top:24px">沁园春 · 长沙　1925</div>
+    </div>
+  </section>
+
+  <!-- ============ P4 · Ch.1 橘子洲头 · essay (Forest Ink) ============ -->
+  <section class="page" data-theme="forest-ink" data-label="橘子洲·二">
+    <div class="atmo"></div><div class="inkfx"></div><div class="grain"></div>
+    <div class="wrap col">
+      <div class="issue-row reveal"><span>01 · 橘子洲头</span><span class="dot"></span><span>Orange Isle</span></div>
+      <div class="split s-57 gap-l" style="flex:1 1 auto;align-content:center;margin-top:clamp(16px,3vh,36px)">
+        <figure class="frame r-34 reveal" data-par><img src="../橘子洲头/05116682bd5cc8cbb6e7e02273b48af2.jpg" style="--op:center 30%" alt="毛泽东立像"></figure>
+        <div class="col gap-m">
+          <h3 class="h-md reveal">五里长岛，<br>把湘江一分为二</h3>
+          <div class="marginalia reveal">
+            <p class="body">橘子洲是湘江里一道窄长的沙洲，南北长约五公里，宽处不过百余米。它把奔涌的江水劈开，又被同一片水温柔托住——长沙人叫它“水陆洲”。</p>
+            <div class="mg-col">
+              <p>// 关键词</p><p>湘江 · 江心洲</p><p>长约 5 公里</p><p>头像高 约32m</p><p>《沁园春·长沙》</p>
+            </div>
+          </div>
+          <div class="callout reveal" style="margin-top:6px">恰同学少年，风华正茂。<small>— 一座城的青春，被刻进了石头</small></div>
+        </div>
+      </div>
+      <figure class="frame r-169 reveal" data-par style="max-height:26vh;margin-top:auto"><img src="../橘子洲头/51eb7d870cd904afce3027c71d03a415.jpg" style="--op:center 88%" alt="橘子洲头题字"></figure>
+    </div>
+  </section>
+
+  <!-- ============ P5 · Ch.2 国金中心 · hero (Indigo Porcelain) ============ -->
+  <section class="page is-bleed" data-theme="indigo-porcelain" data-label="国金·一">
+    <div class="bleed"><img data-par src="../国金大厦/ff39ef00e780bcadd51808c3f11c4f54.jpg" style="--op:center 50%" alt="国金中心 KAWS 雕塑"></div>
+    <div class="scrim top"></div>
+    <div class="wrap col">
+      <p class="kicker reveal">Chapter 02 · 国金中心 IFS</p>
+      <div class="col gap-m" style="margin-top:6vh">
+        <h2 class="h-display charfx">云端有巨物</h2>
+        <p class="lead reveal" style="max-width:18em">四百五十二米的塔楼之上，<br>一只灰色的 COMPANION 捂着脸坐着，<br>蓝色的 BFF 背对人群。<br>潮玩与天际线，是长沙写给当下的诗。</p>
+      </div>
+      <div class="meta reveal" style="margin-top:auto">长沙 IFS · 7F 雕塑艺术天台 · KAWS：SEEING／WATCHING</div>
+    </div>
+  </section>
+
+  <!-- ============ P6 · Ch.2 国金中心 · essay (Indigo Porcelain) ============ -->
+  <section class="page" data-theme="indigo-porcelain" data-label="国金·二">
+    <div class="atmo"></div><div class="inkfx"></div><div class="grain"></div>
+    <div class="wrap col">
+      <div class="issue-row reveal"><span>02 · 国金中心</span><span class="dot"></span><span>In the clouds</span></div>
+      <div class="split s-75 gap-l" style="flex:1 1 auto;align-content:center;margin-top:clamp(16px,3vh,36px)">
+        <div class="col gap-m">
+          <h3 class="h-xl reveal">还有一只<br>巨大的白兔</h3>
+          <p class="body reveal">它蹲在城市的喧嚣里，安静得像一句省略号。脚下是商场的人潮，身后是密不透风的天际线——而它只是坐着，把所有匆忙都衬得有点好笑。</p>
+          <p class="body reveal">登顶的人多半不为购物，只为在四百米的高处，和一件不说话的巨物对视一会儿。这大概就是当代长沙的浪漫：把艺术，摆在离天空最近的地方。</p>
+          <div class="row gap-l reveal" style="margin-top:6px">
+            <div class="col gap-s"><span class="h-md" style="font-family:var(--sans-en);font-weight:300">452m</span><span class="label">双子塔高度</span></div>
+            <div class="col gap-s"><span class="h-md" style="font-family:var(--sans-en);font-weight:300">7F</span><span class="label">艺术天台</span></div>
+          </div>
+        </div>
+        <figure class="frame r-34 reveal" data-par><img src="../国金大厦/c5ea333533a0dc64c85b3549e0543191.jpg" style="--op:center 40%" alt="国金中心 白兔雕塑"></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ P7 · Ch.3 杜甫江阁 · hero (Midnight Ink) ============ -->
+  <section class="page is-bleed" data-theme="midnight-ink" data-label="江阁·一">
+    <div class="bleed"><img data-par src="../杜甫草堂/e6d87a41a33746ed86205fa609369b6e.jpg" style="--op:center 40%" alt="杜甫江阁 黄昏全景"></div>
+    <div class="scrim top"></div><div class="scrim bottom"></div>
+    <div class="wrap col between">
+      <p class="kicker reveal">Chapter 03 · 杜甫江阁</p>
+      <div class="col gap-m" style="margin-top:auto">
+        <h2 class="h-display charfx">落花时节</h2>
+        <p class="pullquote reveal" style="font-size:clamp(20px,2.3vw,38px);max-width:26ch">“正是江南好风景，<span class="em">落花时节又逢君。</span>”</p>
+        <p class="lead reveal" style="max-width:18em">公元七七〇年，杜甫漂泊到潭州，<br>在江边写下这句。<br>一千二百年后，江阁在夜里亮起金光，<br>像替他把那场重逢，又演了一遍。</p>
+      </div>
+      <div class="meta reveal" style="margin-top:24px">杜甫《江南逢李龟年》· 作于潭州（今长沙）</div>
+    </div>
+  </section>
+
+  <!-- ============ P8 · Ch.3 杜甫江阁 · 夜 evidence wall (Midnight Ink) ============ -->
+  <section class="page" data-theme="midnight-ink" data-label="江阁·二">
+    <div class="atmo"></div><div class="inkfx"></div><div class="grain"></div>
+    <div class="wrap col">
+      <div class="issue-row reveal"><span>03 · 杜甫江阁</span><span class="dot"></span><span>湘江中路 · 夜</span></div>
+      <div class="split s-57 gap-l" style="flex:1 1 auto;margin-top:clamp(14px,2.4vh,30px)">
+        <div class="col gap-m" style="align-self:center">
+          <h3 class="h-md reveal">入夜，两岸的灯<br>次第亮起</h3>
+          <p class="body reveal">江阁的飞檐被灯打成暖金，对岸的高楼把整面墙当作画布，蓝色的浪在楼体上翻涌。古与今隔江相望，谁也不打扰谁。</p>
+          <p class="body reveal">偶有汉服少年凭栏而立，衣袖被夜风吹起——恍惚之间，像是从杜甫的诗里，走出来的人。</p>
+          <hr class="accent-line reveal">
+          <p class="label reveal">飞檐 · 灯光秀 · 凭栏者</p>
+        </div>
+        <div class="wall reveal">
+          <figure class="big"><img data-par src="../杜甫草堂/8c818d417feac05d4b8ab7802f0063ae.jpg" alt="湘江两岸灯光秀"></figure>
+          <figure><img src="../杜甫草堂/2d28ecee20c92c4b88b2cb1e6b5329e0.jpg" alt="江阁飞檐金光"></figure>
+          <figure><img src="../杜甫草堂/9f14db836879d0977169ab3093ce6379.jpg" alt="汉服少年凭栏"></figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ P9 · Ch.4 湖南博物院 · hero (Kraft Paper) ============ -->
+  <section class="page is-bleed" data-theme="kraft-paper" data-label="博物院·一">
+    <div class="bleed"><img data-par src="../马王堆/5119f388ea23fce76b5c94a87919fa1e.jpg" style="--op:center 45%" alt="西汉 彩绘凤鸟漆木架鼓"></div>
+    <div class="scrim left"></div>
+    <div class="wrap col">
+      <p class="kicker reveal">Chapter 04 · 湖南博物院 · 马王堆</p>
+      <div class="col gap-m" style="margin-top:auto">
+        <h2 class="h-display charfx">一念千年</h2>
+        <p class="lead reveal" style="max-width:17em">西汉的工匠在黑漆上描了一对凤鸟，<br>红与金缠绕成纹。两千年过去，<br>漆色未褪，鸟仍在引颈。</p>
+      </div>
+      <div class="meta reveal" style="margin-top:24px">彩绘凤鸟漆木架鼓 · 西汉（复制）</div>
+    </div>
+  </section>
+
+  <!-- ============ P10 · Ch.4 湖南博物院 · 文物档案 (Kraft Paper) ============ -->
+  <section class="page" data-theme="kraft-paper" data-label="博物院·二">
+    <div class="atmo"></div><div class="inkfx"></div><div class="grain"></div>
+    <div class="wrap col">
+      <div class="issue-row reveal"><span>04 · 湖南博物院</span><span class="dot"></span><span>Hunan Museum</span></div>
+      <div class="split s-57 gap-l" style="flex:1 1 auto;align-content:center;margin-top:clamp(14px,2.4vh,30px)">
+        <figure class="frame r-34 reveal" data-par><img src="../马王堆/5d63aa3aa35e3f496b09cbe85fa75e5e.jpg" style="--op:center 30%" alt="T形帛画"></figure>
+        <div class="col gap-m">
+          <h3 class="h-md reveal">一幅帛画，<br>画着她想象的来世</h3>
+          <p class="body reveal">辛追夫人的 T 形帛画，自上而下画着天、人、地三界：日中有金乌，月里有蟾蜍，巨龙穿璧而过。这是两千年前的人，为死亡写下的浪漫。</p>
+          <div class="ledger reveal">
+            <div class="led-row"><span class="led-no">壹</span><span class="led-t">T 形帛画</span><span class="led-d">西汉 · 引魂升天</span></div>
+            <div class="led-row"><span class="led-no">贰</span><span class="led-t">人面纹方鼎</span><span class="led-d">商 · 大禾</span></div>
+            <div class="led-row"><span class="led-no">叁</span><span class="led-t">青铜礼器 · 剑</span><span class="led-d">商周 · 重器</span></div>
+            <div class="led-row"><span class="led-no">肆</span><span class="led-t">辛追墓椁室</span><span class="led-d">整木 · 巨构</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="toc-thumbs reveal" style="margin-top:auto">
+        <figure><img src="../马王堆/bcfbdbaa6d6aa3ba9c9bafe6f2e904c2.jpg" alt="人面纹方鼎"></figure>
+        <figure><img src="../马王堆/79fca3d36e803e035bea7f2f1936812d.jpg" alt="青铜礼器"></figure>
+        <figure><img src="../马王堆/3d382bd137b708360759620eeb1eb826.jpg" alt="青铜剑"></figure>
+        <figure><img src="../马王堆/2ad9999570d4f18952a43d278e055097.jpg" alt="辛追墓椁室"></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ P11 · 跋 (Dune) ============ -->
+  <section class="page" data-theme="dune" data-label="跋">
+    <div class="atmo"></div><div class="inkfx"></div><div class="grain"></div>
+    <div class="wrap col">
+      <div class="issue-row reveal"><span>跋 · Afterword</span><span class="dot"></span><span>山水洲城 Vol.01</span></div>
+      <div class="col gap-l" style="flex:1 1 auto;justify-content:center;align-items:flex-start">
+        <p class="kicker reveal">留给下一次</p>
+        <h2 class="pullquote charfx" style="font-size:clamp(40px,7.2vw,108px);line-height:1.16">一日太短，<br>长沙太长。</h2>
+        <p class="lead reveal" style="max-width:32em">江水从不重复，却总在同一处拐弯，等你回来。<br>下一回，换个季节，再走一遍。</p>
+        <hr class="accent-line reveal">
+      </div>
+      <div class="row between reveal" style="margin-top:auto">
+        <span class="meta">摄影 · 你　／　文 · Claude</span>
+        <span class="meta">完 · FIN</span>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===== fixed UI ===== -->
+<div class="ui topbar">
+  <span class="brand">山水洲城 · Changsha</span>
+</div>
+<div class="ui dots" id="dots"></div>
+<div class="ui progress"><i id="progressBar"></i></div>
+<div class="ui hint" id="hint">滚动 / ↑ ↓ 翻页　·　杜甫江阁 → 橘子洲 → 国金 → 湖南博物院</div>
+
+<script>
+(function(){
+"use strict";
+var deck=document.getElementById('deck');
+var pages=[].slice.call(document.querySelectorAll('.page'));
+
+/* ---------- char-fx wrapping ---------- */
+function wrapChars(el){
+  if(el.dataset.wrapped)return;
+  el.dataset.orig=el.innerHTML;
+  var html=el.innerHTML, out='', i=0;
+  // walk text, keep <br>/<span> tags intact-ish: split on tags
+  html.replace(/(<[^>]+>)|([^<]+)/g,function(m,tag,txt){
+    if(tag){out+=tag;return m;}
+    for(var k=0;k<txt.length;k++){var c=txt[k];
+      if(c===' '){out+='<span class="ch sp"></span>';}
+      else{out+='<span class="ch" style="transition-delay:'+(i*0.045)+'s">'+c+'</span>';i++;}
+    }
+    return m;
+  });
+  el.innerHTML=out; el.dataset.wrapped='1';
+}
+var charEls=[].slice.call(document.querySelectorAll('.charfx'));
+charEls.forEach(wrapChars);
+
+/* ---------- ink-flow canvas (single, follows active page) ---------- */
+var canvas=document.createElement('canvas');canvas.style.width='100%';canvas.style.height='100%';
+var ctx=canvas.getContext('2d');var inkHost=null,inkW=0,inkH=0,dpr=Math.min(window.devicePixelRatio||1,2);
+var inkCol=[20,20,20],accCol=[120,120,120],dark=false;
+var blobs=[];for(var b=0;b<5;b++)blobs.push({ax:.18+Math.random()*.22,ay:.16+Math.random()*.2,sx:.05+Math.random()*.08,sy:.04+Math.random()*.07,px:Math.random()*6.28,py:Math.random()*6.28,r:.5+Math.random()*.35});
+function mountInk(pg){
+  var host=pg.querySelector('.inkfx'); if(!host)return;
+  if(inkHost!==host){if(canvas.parentNode)canvas.parentNode.removeChild(canvas);host.appendChild(canvas);inkHost=host;sizeInk();}
+  var cs=getComputedStyle(pg);
+  inkCol=(cs.getPropertyValue('--ink-rgb')||'20,20,20').split(',').map(Number);
+  accCol=(cs.getPropertyValue('--accent-rgb')||'120,120,120').split(',').map(Number);
+  dark=(pg.getAttribute('data-theme')==='midnight-ink');
+}
+function sizeInk(){if(!inkHost)return;var r=inkHost.getBoundingClientRect();inkW=r.width;inkH=r.height;
+  canvas.width=Math.max(1,inkW*dpr);canvas.height=Math.max(1,inkH*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);}
+var t0=0;
+function tick(ts){
+  requestAnimationFrame(tick);
+  if(!inkHost||!inkW)return;
+  var t=ts*0.001;
+  ctx.clearRect(0,0,inkW,inkH);
+  ctx.globalCompositeOperation=dark?'lighter':'multiply';
+  for(var i=0;i<blobs.length;i++){var b=blobs[i];
+    var x=inkW*(0.5+b.ax*Math.sin(t*b.sx+b.px));
+    var y=inkH*(0.5+b.ay*Math.sin(t*b.sy+b.py));
+    var rad=Math.min(inkW,inkH)*b.r;
+    var col=(i%2===0)?accCol:inkCol;
+    var a=dark?0.11:0.07;
+    var g=ctx.createRadialGradient(x,y,0,x,y,rad);
+    g.addColorStop(0,'rgba('+col[0]+','+col[1]+','+col[2]+','+a+')');
+    g.addColorStop(1,'rgba('+col[0]+','+col[1]+','+col[2]+',0)');
+    ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,rad,0,6.2832);ctx.fill();
+  }
+  ctx.globalCompositeOperation='source-over';
+}
+requestAnimationFrame(tick);
+window.addEventListener('resize',function(){sizeInk();});
+
+/* ---------- reveal + active page via IntersectionObserver ---------- */
+function setActive(pg){
+  pages.forEach(function(p){if(p!==pg)p.classList.remove('active');});
+  pg.classList.add('active');
+  mountInk(pg);
+  // reveal children with stagger
+  var revs=pg.querySelectorAll('.reveal');
+  revs.forEach(function(el,i){el.style.transitionDelay=(i*0.085)+'s';});
+  requestAnimationFrame(function(){
+    revs.forEach(function(el){el.classList.add('is-in');});
+    pg.querySelectorAll('.charfx').forEach(function(el){el.classList.add('is-in');});
+  });
+  // update dots
+  var idx=pages.indexOf(pg);
+  dotEls.forEach(function(d,i){d.classList.toggle('on',i===idx);});
+}
+function clearReveal(pg){
+  pg.querySelectorAll('.reveal').forEach(function(el){el.classList.remove('is-in');});
+  pg.querySelectorAll('.charfx').forEach(function(el){el.classList.remove('is-in');});
+}
+var io=new IntersectionObserver(function(ents){
+  ents.forEach(function(e){
+    if(e.isIntersecting&&e.intersectionRatio>0.55){setActive(e.target);}
+    else if(e.intersectionRatio<0.2){clearReveal(e.target);}
+  });
+},{root:deck,threshold:[0,0.2,0.55,0.9]});
+pages.forEach(function(p){io.observe(p);});
+
+/* ---------- parallax + progress ---------- */
+var ticking=false;
+deck.addEventListener('scroll',function(){
+  if(ticking)return;ticking=true;
+  requestAnimationFrame(function(){
+    var vh=deck.clientHeight, st=deck.scrollTop;
+    pages.forEach(function(pg){
+      var off=pg.offsetTop-st;            // top of page relative to viewport
+      var prog=off/vh;                    // 0 when aligned, +-1 adjacent
+      if(prog>-1.1&&prog<1.1){
+        pg.querySelectorAll('[data-par]').forEach(function(el){
+          var depth=el.classList.contains('bleed')||el.parentNode.classList.contains('bleed')?60:24;
+          el.style.transform=(el.tagName==='IMG'&&el.parentNode.classList.contains('bleed')?'scale(1.12) ':'')+'translate3d(0,'+(prog*depth)+'px,0)';
+        });
+      }
+    });
+    var max=deck.scrollHeight-vh;
+    progressBar.style.width=(max>0?(st/max*100):0)+'%';
+    ticking=false;
+  });
+});
+
+/* ---------- page dots nav ---------- */
+var dotsBox=document.getElementById('dots'),dotEls=[];
+pages.forEach(function(pg,i){
+  var d=document.createElement('b');d.setAttribute('data-l',pg.dataset.label||('P'+(i+1)));
+  d.addEventListener('click',function(){deck.scrollTo({top:pg.offsetTop,behavior:'smooth'});});
+  dotsBox.appendChild(d);dotEls.push(d);
+});
+var progressBar=document.getElementById('progressBar');
+
+/* keyboard nav */
+function curIdx(){var st=deck.scrollTop,vh=deck.clientHeight;return Math.round(st/vh);}
+document.addEventListener('keydown',function(e){
+  if(e.key==='ArrowDown'||e.key==='PageDown'){e.preventDefault();var n=Math.min(pages.length-1,curIdx()+1);deck.scrollTo({top:pages[n].offsetTop,behavior:'smooth'});}
+  if(e.key==='ArrowUp'||e.key==='PageUp'){e.preventDefault();var p=Math.max(0,curIdx()-1);deck.scrollTo({top:pages[p].offsetTop,behavior:'smooth'});}
+});
+
+/* hide hint */
+setTimeout(function(){var h=document.getElementById('hint');if(h)h.style.opacity='0';},5200);
+
+/* init first page */
+setActive(pages[0]);
+
+})();
+</script>
+</body>
+</html>

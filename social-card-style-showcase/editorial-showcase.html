@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>Editorial Magazine × E-ink — 6 palette samples</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <style>
+    /* ===== Theme tokens — 6 Editorial palettes (set per-poster via data-theme) ===== */
+    :root, [data-theme="ink-classic"] {
+      --paper:#f3f0e8; --paper-2:#ebe6da; --ink:#0a0a0b; --muted:#68625a;
+      --line:rgba(10,10,11,.22); --accent:#111111; --accent-soft:#d8d2c6;
+      --ink-rgb:10,10,11; --paper-rgb:243,240,232; --accent-rgb:17,17,17;
+    }
+    [data-theme="indigo-porcelain"] {
+      --paper:#f2f4f5; --paper-2:#e5ebef; --ink:#0a1f3d; --muted:#5f6d78;
+      --line:rgba(10,31,61,.20); --accent:#315d93; --accent-soft:#d7e1ec;
+      --ink-rgb:10,31,61; --paper-rgb:242,244,245; --accent-rgb:49,93,147;
+    }
+    [data-theme="forest-ink"] {
+      --paper:#f5f1e8; --paper-2:#e8dfcf; --ink:#16251b; --muted:#5d665d;
+      --line:rgba(22,37,27,.22); --accent:#2e6b4f; --accent-soft:#d4dfd2;
+      --ink-rgb:22,37,27; --paper-rgb:245,241,232; --accent-rgb:46,107,79;
+    }
+    [data-theme="kraft-paper"] {
+      --paper:#eedfc7; --paper-2:#dfc9a8; --ink:#2a1e13; --muted:#755f49;
+      --line:rgba(42,30,19,.24); --accent:#9b5a2e; --accent-soft:#d5b58f;
+      --ink-rgb:42,30,19; --paper-rgb:238,223,199; --accent-rgb:155,90,46;
+    }
+    [data-theme="dune"] {
+      --paper:#f0e6d2; --paper-2:#ded0b7; --ink:#1f1a14; --muted:#6f6557;
+      --line:rgba(31,26,20,.22); --accent:#8f7650; --accent-soft:#d4c2a4;
+      --ink-rgb:31,26,20; --paper-rgb:240,230,210; --accent-rgb:143,118,80;
+    }
+    [data-theme="midnight-ink"] {
+      --paper:#0e0d0c; --paper-2:#1a1714; --ink:#ece2cf; --muted:#9a8c75;
+      --line:rgba(236,226,207,.22); --accent:#d4a04a; --accent-soft:#3a2a14;
+      --ink-rgb:236,226,207; --paper-rgb:14,13,12; --accent-rgb:212,160,74;
+    }
+
+    /* ===== Typography stack ===== */
+    :root {
+      --serif-zh:"Noto Serif SC","Songti SC","STSong",serif;
+      --serif-en:"Playfair Display","Noto Serif SC",serif;
+      --sans-zh:"Noto Sans SC",-apple-system,"PingFang SC","Microsoft YaHei UI",sans-serif;
+      --sans-en:"Inter",-apple-system,BlinkMacSystemFont,sans-serif;
+      --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Consolas,monospace;
+    }
+
+    *,*::before,*::after { box-sizing:border-box; }
+    html,body { margin:0; padding:0; }
+    body {
+      background:#15151a; font-family:var(--sans-zh); color:#0a0a0b;
+      -webkit-font-smoothing:antialiased; padding:64px 32px;
+    }
+    .sheet { display:flex; flex-direction:column; align-items:center; gap:24px; }
+
+    /* gallery label (NOT part of poster export) */
+    .gal-head { width:1080px; max-width:100%; color:#e8e4da; margin:40px 0 4px; }
+    .gal-head:first-of-type { margin-top:0; }
+    .gal-head .gh-name { font-family:var(--serif-en); font-size:30px; font-weight:700; letter-spacing:.01em; }
+    .gal-head .gh-meta { font-family:var(--mono); font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:#9a958c; margin-top:6px; }
+    .gal-head .gh-use  { font-family:var(--sans-zh); font-size:15px; color:#bdb8ad; margin-top:8px; line-height:1.5; }
+
+    /* ===== Poster board ===== */
+    .poster { position:relative; background:var(--paper); color:var(--ink); overflow:hidden; isolation:isolate; }
+    .poster.xhs { width:1080px; height:1440px; }
+    .poster figure { margin:0; }
+    .poster.xhs .content { padding:96px 88px; }
+    .content { position:relative; width:100%; height:100%; z-index:3; display:flex; flex-direction:column; }
+
+    /* ===== Background atmosphere layers (CSS-only; no flat fill) ===== */
+    .paper-wash { position:absolute; inset:0; z-index:1; pointer-events:none;
+      background:linear-gradient(180deg, rgba(var(--ink-rgb),.02), rgba(var(--ink-rgb),.05) 60%, rgba(var(--ink-rgb),.08)); }
+    .ink-wash { position:absolute; inset:0; z-index:1; pointer-events:none;
+      background:
+        radial-gradient(70% 55% at 16% 14%, rgba(var(--ink-rgb),.10), transparent 60%),
+        radial-gradient(80% 60% at 86% 88%, rgba(var(--accent-rgb),.12), transparent 64%); }
+    .grain { position:absolute; inset:0; z-index:2; pointer-events:none; opacity:.35; mix-blend-mode:multiply;
+      background-image:radial-gradient(rgba(0,0,0,.045) 1px, transparent 1px); background-size:3px 3px; }
+    /* Midnight Ink overrides */
+    [data-theme="midnight-ink"] .grain { opacity:.26; mix-blend-mode:screen;
+      background-image:radial-gradient(rgba(255,244,214,.10) 1px, transparent 1px); }
+    [data-theme="midnight-ink"] .ink-wash {
+      background:
+        radial-gradient(80% 50% at 26% 14%, rgba(212,160,74,.16), transparent 62%),
+        radial-gradient(70% 60% at 82% 86%, rgba(60,40,20,.34), transparent 70%),
+        linear-gradient(180deg, rgba(236,226,207,.02), rgba(0,0,0,.30)); }
+
+    /* ===== Type roles ===== */
+    .kicker { font-family:var(--mono); font-size:21px; letter-spacing:.22em; text-transform:uppercase; color:rgba(var(--ink-rgb),.55); margin:0 0 18px; }
+    .h-display { font-family:var(--serif-zh); font-weight:500; font-size:124px; line-height:1.06; letter-spacing:.04em; margin:0 0 24px; color:var(--ink); }
+    .h-xl { font-family:var(--serif-zh); font-weight:500; font-size:88px; line-height:1.10; letter-spacing:.03em; margin:0 0 24px; color:var(--ink); }
+    .h-md { font-family:var(--serif-zh); font-weight:500; font-size:56px; line-height:1.18; letter-spacing:.02em; margin:0 0 18px; color:var(--ink); }
+    .h-sub { font-family:var(--serif-en); font-style:italic; font-weight:400; font-size:36px; color:var(--muted); margin:0 0 24px; }
+    .lead { font-family:var(--serif-zh); font-weight:400; font-size:28px; line-height:1.55; color:rgba(var(--ink-rgb),.82); margin:0 0 24px; }
+    .body { font-family:var(--serif-zh); font-weight:400; font-size:24px; line-height:1.65; color:rgba(var(--ink-rgb),.80); margin:0 0 18px; }
+    .meta, .label { font-family:var(--mono); font-size:18px; letter-spacing:.20em; text-transform:uppercase; color:rgba(var(--ink-rgb),.55); }
+    .pullquote { font-family:var(--serif-zh); font-style:italic; font-weight:500; font-size:64px; line-height:1.28; color:var(--ink); margin:0; }
+
+    /* ===== Issue rows ===== */
+    .issue-row { display:flex; align-items:center; gap:16px; font-family:var(--mono); font-size:20px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); }
+    .issue-row .dot { width:6px; height:6px; border-radius:50%; background:var(--accent); }
+    .issue-strip { position:absolute; left:88px; right:88px; bottom:56px; display:flex; justify-content:space-between; align-items:center; gap:32px; font-family:var(--mono); font-size:18px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); border-top:1px solid var(--line); padding-top:18px; z-index:4; }
+    .issue-strip span { white-space:nowrap; }
+
+    /* ===== Primitives ===== */
+    .stack { display:flex; flex-direction:column; }
+    .gap-1 { gap:12px; } .gap-2 { gap:24px; } .gap-3 { gap:36px; } .gap-4 { gap:48px; } .gap-5 { gap:64px; }
+    .row { display:flex; flex-direction:row; }
+    .col-2-7-5 { display:grid; grid-template-columns:7fr 5fr; gap:48px; }
+    .grow { flex:1; }
+    .rule { height:1px; background:var(--line); border:0; margin:24px 0; }
+    .rule-accent { height:2px; background:var(--accent); border:0; margin:24px 0; width:96px; }
+
+    /* ===== Components ===== */
+    .callout { border-left:3px solid var(--accent); padding:18px 28px; font-family:var(--serif-zh); font-style:italic; font-size:36px; line-height:1.35; color:var(--ink); background:var(--paper-2); }
+    .callout .callout-src { display:block; margin-top:18px; font-style:normal; font-family:var(--mono); font-size:20px; letter-spacing:.12em; color:var(--muted); }
+
+    .ledger { display:flex; flex-direction:column; }
+    .ledger-row { display:grid; grid-template-columns:96px 1fr auto; gap:24px; align-items:baseline; padding:28px 0; border-bottom:1px solid var(--line); }
+    .ledger-row .ledger-nb { font-family:var(--mono); font-size:28px; color:var(--accent); letter-spacing:.08em; }
+    .ledger-row .ledger-title { font-family:var(--serif-zh); font-weight:500; font-size:42px; letter-spacing:.02em; color:var(--ink); }
+    .ledger-row .ledger-note { font-family:var(--serif-zh); font-weight:400; font-size:22px; line-height:1.5; color:rgba(var(--ink-rgb),.72); }
+
+    .marginalia { display:grid; grid-template-columns:1fr 240px; gap:48px; }
+    .marginalia .mg-col { border-left:1px solid var(--line); padding-left:24px; }
+    .marginalia .mg-col p { font-family:var(--mono); font-size:20px; letter-spacing:.04em; color:var(--muted); margin:0 0 16px; line-height:1.5; }
+  </style>
+</head>
+<body>
+  <main class="sheet">
+
+    <!-- ============ 1 · INK CLASSIC — Type-led cover (M01) ============ -->
+    <div class="gal-head">
+      <div class="gh-name">1 · Ink Classic</div>
+      <div class="gh-meta">Editorial × E-ink · Recipe M01 Cover · 3:4 1080×1440</div>
+      <div class="gh-use">水墨经典：纸墨黑白，最中性。商业评论 / AI 随笔 / 产品思考 / 通用编辑封面。</div>
+    </div>
+    <section class="poster xhs" data-theme="ink-classic" id="ed-1">
+      <div class="paper-wash"></div><div class="ink-wash"></div><div class="grain"></div>
+      <div class="content stack gap-3">
+        <div class="issue-row"><span>Vol. 07</span><span class="dot"></span><span>2026.06</span></div>
+        <div class="stack gap-1">
+          <p class="kicker">思考 · ESSAY</p>
+          <h1 class="h-display">我们正在<br>外包记忆</h1>
+          <p class="h-sub">On outsourcing memory</p>
+        </div>
+        <p class="lead">手机记住了所有号码，云端存下了所有照片。当工具替我们记住一切，我们究竟是更自由，还是更轻易地忘记？</p>
+        <hr class="rule-accent">
+        <div class="ledger" style="margin-top:auto">
+          <div class="ledger-row"><span class="ledger-nb">01</span><span class="ledger-title">外部记忆的代价</span><span class="ledger-note">便利换走了什么</span></div>
+          <div class="ledger-row"><span class="ledger-nb">02</span><span class="ledger-title">注意力的迁移</span><span class="ledger-note">从记住到检索</span></div>
+        </div>
+      </div>
+      <div class="issue-strip"><span>Issue · Magazine</span><span>—</span><span>by 编辑部</span></div>
+    </section>
+
+    <!-- ============ 2 · INDIGO PORCELAIN — Marginalia essay (M11) ============ -->
+    <div class="gal-head">
+      <div class="gh-name">2 · Indigo Porcelain</div>
+      <div class="gh-meta">Editorial × E-ink · Recipe M11 Marginalia · 3:4 1080×1440</div>
+      <div class="gh-use">靛青影瓷：冷静理性的蓝。科技 / 研究 / 数据 / AI 基础设施 / 分析型长文。</div>
+    </div>
+    <section class="poster xhs" data-theme="indigo-porcelain" id="ed-2">
+      <div class="paper-wash"></div><div class="ink-wash"></div><div class="grain"></div>
+      <div class="content stack gap-3">
+        <p class="kicker">研究 · RESEARCH</p>
+        <h2 class="h-xl">幻觉是缺陷，<br>还是特性？</h2>
+        <div class="marginalia grow">
+          <div class="stack">
+            <p class="body">语言模型的"幻觉"常被当作 bug 来修。但从生成机制看，它和创造力源自同一种能力——在不确定处继续往下写。</p>
+            <p class="body">真正的问题不是"会不会编"，而是"何时该停"。把约束放在检索与核验层，比一味惩罚生成更有效。</p>
+            <p class="body">于是评估的重点，从"答案对不对"转向"它知不知道自己不知道"。</p>
+          </div>
+          <div class="mg-col">
+            <p>// 关键词</p>
+            <p>生成 vs 检索</p>
+            <p>不确定性</p>
+            <p>校验层</p>
+            <p>自我认知</p>
+          </div>
+        </div>
+      </div>
+      <div class="issue-strip"><span>Field · Notes 03</span><span>—</span><span>2026.06</span></div>
+    </section>
+
+    <!-- ============ 3 · FOREST INK — Tall ledger (M08) ============ -->
+    <div class="gal-head">
+      <div class="gh-name">3 · Forest Ink</div>
+      <div class="gh-meta">Editorial × E-ink · Recipe M08 Tall Ledger · 3:4 1080×1440</div>
+      <div class="gh-use">森墨：墨绿大地色。徒步 / 户外 / 自然 / 可持续 / 田野笔记 / 接地气的生活方式。</div>
+    </div>
+    <section class="poster xhs" data-theme="forest-ink" id="ed-3">
+      <div class="paper-wash"></div><div class="ink-wash"></div><div class="grain"></div>
+      <div class="content stack gap-2">
+        <p class="kicker">户外 · 岳麓山</p>
+        <h2 class="h-xl">进山前，<br>先理这 5 样</h2>
+        <div class="ledger grow" style="justify-content:center">
+          <div class="ledger-row"><span class="ledger-nb">01</span><span class="ledger-title">水与电解质</span><span class="ledger-note">每小时 ≥ 500ml</span></div>
+          <div class="ledger-row"><span class="ledger-nb">02</span><span class="ledger-title">防滑徒步鞋</span><span class="ledger-note">青石板雨后极滑</span></div>
+          <div class="ledger-row"><span class="ledger-nb">03</span><span class="ledger-title">薄外套</span><span class="ledger-note">山顶比山脚低 4℃</span></div>
+          <div class="ledger-row"><span class="ledger-nb">04</span><span class="ledger-title">充电宝</span><span class="ledger-note">导航 + 拍照很耗电</span></div>
+          <div class="ledger-row"><span class="ledger-nb">05</span><span class="ledger-title">现金零钱</span><span class="ledger-note">山顶小摊不一定扫码</span></div>
+        </div>
+      </div>
+      <div class="issue-strip"><span>Field Note · 长沙</span><span>—</span><span>海拔 300m · 半日</span></div>
+    </section>
+
+    <!-- ============ 4 · KRAFT PAPER — Pull quote (M04) ============ -->
+    <div class="gal-head">
+      <div class="gh-name">4 · Kraft Paper</div>
+      <div class="gh-meta">Editorial × E-ink · Recipe M04 Pull Quote · 3:4 1080×1440</div>
+      <div class="gh-use">牛皮纸：温暖的低科技感。记忆 / 手作 / 个人随笔 / 旧物 / 创作者手记。</div>
+    </div>
+    <section class="poster xhs" data-theme="kraft-paper" id="ed-4">
+      <div class="paper-wash"></div><div class="ink-wash"></div><div class="grain"></div>
+      <div class="content stack gap-3">
+        <div class="issue-row"><span>旧物志</span><span class="dot"></span><span>No. 12</span></div>
+        <p class="kicker">记忆 · MEMORY</p>
+        <div class="grow" style="display:flex; align-items:center">
+          <p class="pullquote">外婆那只<br>搪瓷缸，<br>比我记得的<br>还要久。</p>
+        </div>
+        <div class="callout">缸沿磕掉一块瓷，露出底下的铁，锈成一圈深褐。她说，能用就别换。
+          <span class="callout-src">— 写在祖母搬家那天</span>
+        </div>
+      </div>
+      <div class="issue-strip"><span>Essay · 旧物</span><span>—</span><span>by 阿吉</span></div>
+    </section>
+
+    <!-- ============ 5 · DUNE — Essay split (M03) ============ -->
+    <div class="gal-head">
+      <div class="gh-name">5 · Dune</div>
+      <div class="gh-meta">Editorial × E-ink · Recipe M03 Essay Split · 3:4 1080×1440</div>
+      <div class="gh-use">沙丘：克制的米灰调。设计 / 物品研究 / 作品集封面 / 画廊感 / 审美向。</div>
+    </div>
+    <section class="poster xhs" data-theme="dune" id="ed-5">
+      <div class="paper-wash"></div><div class="ink-wash"></div><div class="grain"></div>
+      <div class="content stack gap-3">
+        <p class="kicker">物品研究 · OBJECT</p>
+        <h2 class="h-xl">一把好椅子，<br>敢做减法</h2>
+        <div class="stack gap-2 grow" style="justify-content:center">
+          <p class="body">它没有多余的曲线，靠背只有两块木片，却恰好托住腰的弧度。</p>
+          <p class="body">真正的设计不是加装饰，而是把"还能拿掉什么"问到尽头。</p>
+          <hr class="rule">
+          <p class="body">坐上去那一刻，你不会想起设计师的名字——这正是它的成功。</p>
+        </div>
+      </div>
+      <div class="issue-strip"><span>Study · No.04</span><span>—</span><span>形式追随克制</span></div>
+    </section>
+
+    <!-- ============ 6 · MIDNIGHT INK — Atmospheric thesis (M09, dark) ============ -->
+    <div class="gal-head">
+      <div class="gh-name">6 · Midnight Ink <span style="color:#d4a04a">(唯一深色)</span></div>
+      <div class="gh-meta">Editorial × E-ink · Recipe M09 Atmospheric Thesis · 3:4 1080×1440</div>
+      <div class="gh-use">午夜墨：唯一的官方深色版。游戏原画 / 夜景摄影 / 电影感封面 / 暗调文化选题。</div>
+    </div>
+    <section class="poster xhs" data-theme="midnight-ink" id="ed-6">
+      <div class="paper-wash"></div><div class="ink-wash"></div><div class="grain"></div>
+      <div class="content stack gap-3">
+        <div class="issue-row"><span>夜行 · NIGHT</span><span class="dot"></span><span>Vol. 09</span></div>
+        <div class="grow" style="display:flex; flex-direction:column; justify-content:center">
+          <p class="kicker">城市 · 长沙</p>
+          <h1 class="h-display">长沙的夜，<br>从不打烊</h1>
+          <p class="h-sub">The city that never sleeps</p>
+          <p class="lead" style="max-width:80%">霓虹在湘江上拉成长线，烧烤摊的烟火升到午夜两点。这座城市把白天的克制，全留给了夜晚去补偿。</p>
+        </div>
+      </div>
+      <div class="issue-strip"><span>Cinematic · 夜</span><span>—</span><span>35mm · ISO3200</span></div>
+    </section>
+
+  </main>
+</body>
+</html>

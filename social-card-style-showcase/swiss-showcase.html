@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>Swiss International — 4 accent samples</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&family=Noto+Sans+SC:wght@200;300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    /* ===== Accent palettes — 4 mutually exclusive (set per-poster via data-accent) ===== */
+    :root, [data-accent="ikb"] {
+      --paper:#fafaf8; --ink:#0a0a0a; --grey-1:#f0f0ee; --grey-2:#d4d4d2; --grey-3:#737373;
+      --accent:#002FA7; --accent-on:#ffffff;
+    }
+    [data-accent="lemon-yellow"] { --paper:#fafaf8; --ink:#0a0a0a; --grey-1:#f0f0ee; --grey-2:#d4d4d2; --grey-3:#737373; --accent:#FFD500; --accent-on:#0a0a0a; }
+    [data-accent="lemon-green"]  { --paper:#fafaf8; --ink:#0a0a0a; --grey-1:#f0f0ee; --grey-2:#d4d4d2; --grey-3:#737373; --accent:#C5E803; --accent-on:#0a0a0a; }
+    [data-accent="safety-orange"]{ --paper:#fafaf8; --ink:#0a0a0a; --grey-1:#f0f0ee; --grey-2:#d4d4d2; --grey-3:#737373; --accent:#FF6B35; --accent-on:#ffffff; }
+
+    :root {
+      --sans:"Inter","Helvetica Neue",Helvetica,"Noto Sans SC",-apple-system,"PingFang SC","Microsoft YaHei UI",sans-serif;
+      --sans-zh:"Noto Sans SC",-apple-system,"PingFang SC","Microsoft YaHei UI","Inter",sans-serif;
+      --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Consolas,monospace;
+      --sp-3:8px; --sp-4:12px; --sp-5:16px; --sp-6:24px; --sp-7:32px; --sp-8:40px; --sp-9:48px; --sp-10:64px; --sp-11:80px; --sp-12:96px; --sp-13:160px;
+    }
+
+    *,*::before,*::after { box-sizing:border-box; }
+    html,body { margin:0; padding:0; }
+    body { background:#15151a; font-family:var(--sans); color:#0a0a0a; -webkit-font-smoothing:antialiased; padding:64px 32px; }
+    .sheet { display:flex; flex-direction:column; align-items:center; gap:24px; }
+
+    /* gallery label (NOT part of poster export) */
+    .gal-head { width:1080px; max-width:100%; color:#e8e4da; margin:40px 0 4px; }
+    .gal-head:first-of-type { margin-top:0; }
+    .gal-head .gh-name { font-family:var(--sans); font-size:30px; font-weight:700; letter-spacing:-.01em; }
+    .gal-head .gh-meta { font-family:var(--mono); font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:#9a958c; margin-top:6px; }
+    .gal-head .gh-use  { font-family:var(--sans-zh); font-size:15px; color:#bdb8ad; margin-top:8px; line-height:1.5; }
+    .gal-head .sw { display:inline-block; width:14px; height:14px; vertical-align:-1px; margin-right:8px; }
+
+    /* ===== Poster board ===== */
+    .poster { position:relative; background:var(--paper); color:var(--ink); overflow:hidden; isolation:isolate; }
+    .poster.xhs { width:1080px; height:1440px; }
+    .poster figure { margin:0; }
+    .poster.xhs .content { padding:96px 80px; }
+    .content { position:relative; width:100%; height:100%; z-index:2; display:flex; flex-direction:column; }
+
+    /* ===== Type roles (the larger, the lighter) ===== */
+    .h-statement { font-family:var(--sans); font-weight:200; font-size:124px; line-height:1.05; letter-spacing:-.015em; margin:0; color:var(--ink); }
+    .h-xl { font-family:var(--sans); font-weight:300; font-size:96px; line-height:1.08; letter-spacing:-.01em; margin:0; color:var(--ink); }
+    .h-md { font-family:var(--sans); font-weight:400; font-size:56px; line-height:1.18; margin:0; color:var(--ink); }
+    .lead { font-family:var(--sans-zh); font-weight:400; font-size:30px; line-height:1.55; color:var(--ink); margin:0; }
+    .body { font-family:var(--sans-zh); font-weight:400; font-size:26px; line-height:1.6; color:var(--ink); margin:0; }
+    .t-cat { font-family:var(--sans); font-weight:600; font-size:22px; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); margin:0; }
+    .t-meta { font-family:var(--mono); font-weight:500; font-size:20px; letter-spacing:.14em; text-transform:uppercase; color:var(--grey-3); margin:0; }
+    .num-mega { font-family:var(--sans); font-weight:200; font-size:168px; line-height:.92; letter-spacing:-.03em; color:var(--ink); margin:0; }
+    .mono { font-family:var(--mono); }
+
+    /* ===== Primitives ===== */
+    .stack { display:flex; flex-direction:column; }
+    .row { display:flex; flex-direction:row; }
+    .gap-4 { gap:var(--sp-4); } .gap-5 { gap:var(--sp-5); } .gap-6 { gap:var(--sp-6); } .gap-7 { gap:var(--sp-7); } .gap-8 { gap:var(--sp-8); } .gap-9 { gap:var(--sp-9); }
+    .grow { flex:1; }
+    .hr-hairline { height:1px; background:var(--grey-2); border:0; margin:0; }
+    .hr-accent { height:3px; background:var(--accent); border:0; width:96px; margin:0; }
+
+    .chrome-min { display:flex; justify-content:space-between; align-items:center; font-family:var(--mono); font-size:18px; letter-spacing:.14em; text-transform:uppercase; color:var(--grey-3); padding-bottom:var(--sp-6); border-bottom:1px solid var(--grey-2); }
+
+    /* ===== S10 H-Bar Chart ===== */
+    .h-bar-chart { display:grid; gap:var(--sp-6); }
+    .h-bar-chart .bar-row { display:grid; grid-template-columns:1fr; gap:var(--sp-4); align-items:center; }
+    .h-bar-chart .bar-row .row-lbl { font-family:var(--sans-zh); font-weight:500; font-size:28px; color:var(--ink); }
+    .h-bar-chart .bar-row .row-track { position:relative; height:32px; background:var(--grey-1); }
+    .h-bar-chart .bar-row .row-fill { position:absolute; left:0; top:0; bottom:0; width:var(--w,50%); background:var(--accent); }
+    .h-bar-chart .bar-row .row-val { font-family:var(--mono); font-weight:500; font-size:26px; letter-spacing:.04em; text-align:left; color:var(--ink); }
+
+    /* ===== S09 KPI Tower ===== */
+    .kpi-tower-row { display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-9); align-items:end; }
+    .kpi-tower-row .tower-col { display:flex; flex-direction:column; gap:var(--sp-5); align-items:flex-start; }
+    .kpi-tower-row .tower-col .num { font-family:var(--sans); font-weight:200; font-size:112px; line-height:1; letter-spacing:-.02em; margin:0; }
+    .kpi-tower-row .tower-col .lbl { font-family:var(--mono); font-size:20px; letter-spacing:.12em; text-transform:uppercase; color:var(--grey-3); margin:0; }
+    .kpi-tower-row .tower-col .bar-tower { width:100%; height:var(--h,240px); background:var(--accent); transform-origin:bottom; }
+    .kpi-tower-row .tower-col.muted .bar-tower { background:var(--grey-2); }
+
+    /* ===== S11 Stacked Ledger ===== */
+    .stacked-ledger { display:flex; flex-direction:column; }
+    .stacked-ledger .ledger-row { display:grid; grid-template-columns:300px 1fr auto; gap:var(--sp-7); align-items:baseline; padding:var(--sp-7) 0; border-bottom:1px solid var(--grey-2); }
+    .stacked-ledger .ledger-row:first-child { padding-top:0; }
+    .stacked-ledger .ledger-row:last-child { border-bottom:0; }
+    .stacked-ledger .ledger-num { font-family:var(--sans); font-weight:200; font-size:104px; line-height:1; letter-spacing:-.02em; margin:0; }
+    .stacked-ledger .ledger-lbl { font-family:var(--sans-zh); font-weight:500; font-size:30px; line-height:1.3; color:var(--ink); }
+    .stacked-ledger .ledger-lbl .sub { display:block; font-weight:400; font-size:22px; color:var(--grey-3); margin-top:var(--sp-3); }
+    .stacked-ledger .ledger-icn { width:56px; height:56px; color:var(--accent); }
+
+    /* ===== S05 Trap / Warning Rows (built from primitives) ===== */
+    .trap { display:flex; flex-direction:column; }
+    .trap-row { display:grid; grid-template-columns:140px 1fr; gap:var(--sp-7); align-items:center; padding:var(--sp-7) 0; border-bottom:1px solid var(--grey-2); }
+    .trap-row:last-child { border-bottom:0; }
+    .trap-row .tr-nb { font-family:var(--sans); font-weight:200; font-size:104px; line-height:.85; letter-spacing:-.02em; color:var(--accent); }
+    .trap-row .tr-title { font-family:var(--sans-zh); font-weight:600; font-size:40px; color:var(--ink); margin:0 0 8px; }
+    .trap-row .tr-note { font-family:var(--sans-zh); font-weight:400; font-size:24px; line-height:1.5; color:var(--grey-3); margin:0; }
+  </style>
+</head>
+<body>
+  <main class="sheet">
+
+    <!-- ============ 1 · IKB BLUE — S10 H-Bar Chart ============ -->
+    <div class="gal-head">
+      <div class="gh-name"><span class="sw" style="background:#002FA7"></span>1 · IKB Blue（克莱因蓝）</div>
+      <div class="gh-meta">Swiss International · Recipe S10 H-Bar Chart · 3:4 1080×1440</div>
+      <div class="gh-use">默认蓝：AI / 技术 / 产品更新 / 设计 / 工程话题的首选。冷静、权威、工程感。</div>
+    </div>
+    <section class="poster xhs" data-accent="ikb" id="sw-1">
+      <div class="content stack gap-9">
+        <div class="chrome-min"><span>Ranking · TOP 6</span><span>2026 H1</span></div>
+        <div class="stack gap-6">
+          <p class="t-cat">Tools · 上半年</p>
+          <h2 class="h-xl">最离不开的<br>六个工具</h2>
+        </div>
+        <div class="h-bar-chart grow" style="align-content:center">
+          <div class="bar-row"><div class="row-lbl">Claude Code</div><div class="row-track"><div class="row-fill" style="--w:96%"></div></div><div class="row-val">96</div></div>
+          <div class="bar-row"><div class="row-lbl">Figma</div><div class="row-track"><div class="row-fill" style="--w:81%"></div></div><div class="row-val">81</div></div>
+          <div class="bar-row"><div class="row-lbl">Linear</div><div class="row-track"><div class="row-fill" style="--w:67%"></div></div><div class="row-val">67</div></div>
+          <div class="bar-row"><div class="row-lbl">Raycast</div><div class="row-track"><div class="row-fill" style="--w:54%"></div></div><div class="row-val">54</div></div>
+          <div class="bar-row"><div class="row-lbl">Obsidian</div><div class="row-track"><div class="row-fill" style="--w:42%"></div></div><div class="row-val">42</div></div>
+          <div class="bar-row"><div class="row-lbl">Cron</div><div class="row-track"><div class="row-fill" style="--w:31%"></div></div><div class="row-val">31</div></div>
+        </div>
+        <p class="t-meta">指数 = 使用天数 / 上半年总天数</p>
+      </div>
+    </section>
+
+    <!-- ============ 2 · LEMON YELLOW — S09 KPI Tower ============ -->
+    <div class="gal-head">
+      <div class="gh-name"><span class="sw" style="background:#FFD500"></span>2 · Lemon Yellow（柠檬黄）</div>
+      <div class="gh-meta">Swiss International · Recipe S09 KPI Tower · 3:4 1080×1440</div>
+      <div class="gh-use">柠檬黄：年轻 / 消费 / 活力 / 零售 / 运动 / 俏皮的信息。注意——黄底必须用黑字。</div>
+    </div>
+    <section class="poster xhs" data-accent="lemon-yellow" id="sw-2">
+      <div class="content stack gap-9">
+        <div class="chrome-min"><span>Data · 半年增长</span><span>2026.06</span></div>
+        <div class="stack gap-6">
+          <p class="t-cat">Growth · 增长</p>
+          <h2 class="h-xl">六个月，<br>四组数字</h2>
+        </div>
+        <div class="kpi-tower-row grow" style="align-self:stretch">
+          <div class="tower-col"><p class="num">132K</p><p class="lbl">Subscribers</p><div class="bar-tower" style="--h:300px"></div></div>
+          <div class="tower-col"><p class="num">3.4M</p><p class="lbl">Reads</p><div class="bar-tower" style="--h:210px"></div></div>
+          <div class="tower-col"><p class="num">68%</p><p class="lbl">Repeat</p><div class="bar-tower" style="--h:150px"></div></div>
+          <div class="tower-col muted"><p class="num">8.2%</p><p class="lbl">Conversion</p><div class="bar-tower" style="--h:96px"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 3 · LEMON GREEN — S11 Stacked Ledger ============ -->
+    <div class="gal-head">
+      <div class="gh-name"><span class="sw" style="background:#C5E803"></span>3 · Lemon Green（荧光绿）</div>
+      <div class="gh-meta">Swiss International · Recipe S11 Stacked Ledger · 3:4 1080×1440</div>
+      <div class="gh-use">荧光绿：生态 / 未来 / 新兴科技 / 健康 / 荧光笔式的当代话题。同样黑字。</div>
+    </div>
+    <section class="poster xhs" data-accent="lemon-green" id="sw-3">
+      <div class="content stack gap-9">
+        <div class="chrome-min"><span>Log · 本周训练</span><span>WK 23</span></div>
+        <div class="stack gap-6">
+          <p class="t-cat">Fitness · 一周</p>
+          <h2 class="h-xl">这一周，<br>身体练了啥</h2>
+        </div>
+        <div class="stacked-ledger grow" style="justify-content:center">
+          <div class="ledger-row"><p class="ledger-num">18<span style="font-size:42px">km</span></p><div class="ledger-lbl">跑步 · Run<span class="sub">3 次 · 配速 5'40"</span></div><i class="ledger-icn" data-lucide="footprints"></i></div>
+          <div class="ledger-row"><p class="ledger-num">4<span style="font-size:42px">次</span></p><div class="ledger-lbl">力量 · Strength<span class="sub">推 / 拉 / 腿 / 核心</span></div><i class="ledger-icn" data-lucide="dumbbell"></i></div>
+          <div class="ledger-row"><p class="ledger-num">120<span style="font-size:42px">min</span></p><div class="ledger-lbl">拉伸 · Mobility<span class="sub">每晚 20 分钟</span></div><i class="ledger-icn" data-lucide="activity"></i></div>
+          <div class="ledger-row"><p class="ledger-num">7.4<span style="font-size:42px">h</span></p><div class="ledger-lbl">睡眠 · Sleep<span class="sub">平均入睡 23:50</span></div><i class="ledger-icn" data-lucide="moon"></i></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 4 · SAFETY ORANGE — S05 Trap / Warning Rows ============ -->
+    <div class="gal-head">
+      <div class="gh-name"><span class="sw" style="background:#FF6B35"></span>4 · Safety Orange（安全橙）</div>
+      <div class="gh-meta">Swiss International · Recipe S05 Trap Rows · 3:4 1080×1440</div>
+      <div class="gh-use">安全橙：工业 / 警示 / 紧迫 / 风险 / 决策点 / 尖锐纠错。天生的"别犯错"配色。</div>
+    </div>
+    <section class="poster xhs" data-accent="safety-orange" id="sw-4">
+      <div class="content stack gap-9">
+        <div class="chrome-min"><span>Warning · 上线清单</span><span>v3.0</span></div>
+        <div class="stack gap-6">
+          <p class="t-cat">Don't · 别再犯</p>
+          <h2 class="h-xl">上线前，<br>4 个致命错</h2>
+        </div>
+        <div class="trap grow" style="justify-content:center">
+          <div class="trap-row"><div class="tr-nb">01</div><div><p class="tr-title">直接在生产库跑迁移</p><p class="tr-note">先在影子库演练，留好回滚脚本</p></div></div>
+          <div class="trap-row"><div class="tr-nb">02</div><div><p class="tr-title">把密钥写进前端</p><p class="tr-note">任何能在浏览器看到的，都已泄露</p></div></div>
+          <div class="trap-row"><div class="tr-nb">03</div><div><p class="tr-title">周五傍晚发版</p><p class="tr-note">出事时没人在，监控也没人看</p></div></div>
+          <div class="trap-row"><div class="tr-nb">04</div><div><p class="tr-title">关掉报警图清净</p><p class="tr-note">告警疲劳要治根，不是静音</p></div></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+  <script>
+    if (window.lucide && typeof window.lucide.createIcons === 'function') window.lucide.createIcons();
+  </script>
+</body>
+</html>
