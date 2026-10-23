@@ -6,7 +6,7 @@ const DIR=__dirname, OUT=path.join(DIR,'shots'); fs.mkdirSync(OUT,{recursive:tru
   let browser;
   for(const ch of ['msedge','chrome',null]){try{const o={headless:true,args:['--force-color-profile=srgb']};if(ch)o.channel=ch;browser=await chromium.launch(o);console.log('launched',ch||'bundled');break;}catch(e){console.log('  x',ch,String(e.message).split('\n')[0]);}}
   if(!browser){console.error('NO_BROWSER');process.exit(3);}
-  const ctx=await browser.newContext({viewport:{width:1512,height:982},deviceScaleFactor:1.25});
+  const ctx=await browser.newContext({viewport:{width:1512,height:982},deviceScaleFactor:1.25,reducedMotion:'reduce'});
   const page=await ctx.newPage();
   page.on('pageerror',e=>console.log('  PAGEERR',e.message));
   await page.goto('file:///'+path.join(DIR,'..','index.html').replace(/\\/g,'/'),{waitUntil:'load',timeout:60000}).catch(e=>console.log('goto',e.message));

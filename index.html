@@ -7,7 +7,7 @@
 <style>
 /* ============================================================
    山水洲城 · 长沙电子杂志   (Editorial Magazine × E-ink)
-   单文件：逐页阅读 · 本页滚动 · 本地图像与系统字体
+   单文件：一屏一页 · 逐页切换 · 本地图像与系统字体
    ============================================================ */
 
 /* ---- 6 palettes (per-page via data-theme) ---- */
@@ -33,7 +33,7 @@ body{background:#0b0b0d;font-family:var(--sans-zh);overflow:hidden;}
 /* ---- scroll-snap deck ---- */
 .emag{height:100vh;height:100dvh;overflow:hidden;}
 .emag::-webkit-scrollbar{width:0;height:0;}
-.page{display:none;position:relative;height:100vh;height:100dvh;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;background:var(--paper);color:var(--ink);isolation:isolate;scrollbar-width:thin;}
+.page{display:none;position:relative;height:100vh;height:100dvh;overflow:hidden;touch-action:pinch-zoom;background:var(--paper);color:var(--ink);isolation:isolate;}
 .page.active{display:block;}
 .wrap{position:relative;z-index:3;min-height:100vh;min-height:100dvh;width:100%;max-width:1180px;margin:0 auto;
   padding:clamp(40px,7vh,86px) clamp(28px,6vw,96px);display:flex;flex-direction:column;}
@@ -195,7 +195,7 @@ figure{margin:0;}
   background:rgba(12,12,14,.55);color:#f3ead8;border:1px solid rgba(243,234,216,.22);border-radius:20px;
   padding:6px 13px 6px 11px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
   -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);transition:background .3s,border-color .3s,transform .3s;user-select:none;}
-.music:hover{background:rgba(12,12,14,.74);border-color:rgba(212,160,74,.6);transform:translateY(-1px);}
+.music:hover{background:rgba(12,12,14,.74);border-color:rgba(212,160,74,.6);}
 .music .icon{width:10px;height:10px;flex:0 0 auto;position:relative;display:inline-block;}
 .music .icon::before,.music .icon::after{content:"";position:absolute;inset:0;border:1.6px solid currentColor;border-radius:50%;opacity:.34;}
 .music .icon::after{transform:scale(.55);opacity:.9;}
@@ -247,6 +247,54 @@ figure{margin:0;}
   .reveal,.ch{opacity:1!important;transform:none!important;filter:none!important;}
   .inkfx,.ink-veil{display:none!important;}
   [data-par]{transform:none!important;will-change:auto!important;}
+}
+/* One screen per page; compact the editorial grids before fitting short screens. */
+.wrap{min-height:0;height:100%;padding:clamp(28px,5vh,60px) clamp(24px,5vw,70px);transform-origin:top center;}
+.wrap>.split{min-height:0;padding-bottom:16px;}
+.split .frame{height:min(48vh,520px);width:100%;aspect-ratio:auto;}
+.gap-m{gap:20px;}.gap-l{gap:30px;}
+.toc-thumbs{height:18vh;max-height:160px;flex-shrink:0;padding-top:12px;}
+.toc-thumbs figure{position:relative;height:100%;aspect-ratio:auto;}
+.toc-thumbs img{position:absolute;inset:0;}
+.wall{height:min(54vh,540px);}
+.page.entering .wrap{animation:pageArrive .45s ease-out both;}
+.page.entering .reveal{animation:textArrive .7s ease-out both;animation-delay:var(--arrival-delay,0ms);}
+.page.settling .charfx{animation:textSettle 1.1s ease-in-out both;}
+@keyframes pageArrive{from{opacity:.8;translate:0 calc(var(--turn-dir,1)*20px);}to{opacity:1;translate:0 0;}}
+@keyframes textArrive{from{opacity:.65;translate:0 8px;}to{opacity:1;translate:0 0;}}
+@keyframes textSettle{0%,100%{translate:0 0;}45%{translate:0 -2px;}}
+.glyph{display:inline-block;transition:transform .18s ease-out;color:inherit;}
+@media(hover:hover) and (pointer:fine){
+  .glyph:hover{transform:translateY(-2px) rotate(-5deg) skewX(-4deg) scale(1.08);}
+  button{transition:transform .18s ease-out;transform:perspective(600px) rotateX(var(--tilt-x,0deg)) rotateY(var(--tilt-y,0deg)) translateY(var(--lift,0px));}
+  button:hover{--lift:-1px;}
+  .bleed img,.frame img,.wall img{translate:var(--photo-x,0px) var(--photo-y,0px);transition:translate .45s ease-out;}
+}
+@media(max-width:780px){
+  .wrap{padding:60px 24px 26px;}
+  .wrap>.split{margin-top:14px!important;margin-bottom:8px;padding-bottom:8px;gap:16px;}
+  .split .frame{height:22vh;}
+  .gap-m{gap:12px;}.gap-l{gap:16px;}
+  .h-xl{font-size:32px;}.h-md{font-size:26px;}
+  .body{font-size:14px;line-height:1.6;}.lead{font-size:16px;line-height:1.6;}
+  .toc-item{padding:10px 0;grid-template-columns:auto 1fr auto;gap:12px;}
+  .toc-t{font-size:21px;}.toc-d{grid-column:auto;font-size:9px;letter-spacing:0;}
+  .toc-t small{font-size:10px;}
+  .toc-thumbs{grid-template-columns:repeat(4,1fr);height:10vh;max-height:86px;}
+  .led-row{padding:7px 0;grid-template-columns:auto 1fr auto;gap:10px;}
+  .led-t{font-size:17px;}.led-d{grid-column:auto;font-size:9px;letter-spacing:0;}
+  .marginalia{grid-template-columns:1fr;gap:12px;}
+  .mg-col{flex-direction:row;flex-wrap:wrap;padding:8px 0 0;gap:6px 12px;}
+  .mg-col p{font-size:10px;}
+  .callout{padding:12px 16px;font-size:18px;}.callout small{margin-top:8px;}
+  .wall{height:29vh;grid-template-columns:1.2fr 1fr;grid-template-rows:1fr 1fr;}
+  .wall .big{grid-row:1/3;grid-column:auto;aspect-ratio:auto;}.wall figure{aspect-ratio:auto;}
+  .wall img{position:absolute;inset:0;}
+  .issue-row{gap:8px;font-size:10px;letter-spacing:.1em;}
+}
+@media(prefers-reduced-motion:reduce){
+  .glyph,button{transform:none!important;}
+  .bleed img,.frame img,.wall img{translate:none!important;}
 }
 </style>
 </head>
@@ -490,7 +538,6 @@ var deck=document.getElementById('deck');
 var pages=[].slice.call(document.querySelectorAll('.page'));
 var activePg=null;   // tracks currently-active page so setActive is idempotent
 var motion=window.matchMedia('(prefers-reduced-motion: reduce)');
-function scrollBehavior(){return motion.matches?'instant':'smooth';}
 pages.forEach(function(pg,i){pg.id='page-'+(i+1);pg.tabIndex=-1;pg.setAttribute('aria-label',pg.dataset.label);});
 function goToPage(pg,focusPage){
   var moveFocus=focusPage||(activePg&&activePg.contains(document.activeElement));
@@ -545,23 +592,99 @@ function resumeInk(){
 }
 motion.addEventListener('change',function(){
   if(motion.matches){
-    veil.classList.remove('on');
+    clearTimeout(arrivalTimer);clearTimeout(settleTimer);
+    veil.classList.remove('on');resetInteraction();
+    pages.forEach(function(pg){pg.classList.remove('entering','settling');});
     pages.forEach(function(pg){pg.querySelectorAll('[data-par]').forEach(function(el){el.style.transform='';});});
   }
   resumeInk();
 });
 document.addEventListener('visibilitychange',resumeInk);
-window.addEventListener('resize',function(){sizeInk();updateReading();});
+window.addEventListener('resize',function(){fitPage(activePg);sizeInk();updateReading();});
 
-/* ---------- one visible page, with scrolling inside long pages ---------- */
+/* ---------- fit each composition to one screen ---------- */
+function fitPage(pg){
+  if(!pg)return;
+  var wrap=pg.querySelector('.wrap');
+  wrap.style.transform='';wrap.style.height='auto';
+  var available=pg.clientHeight;
+  var natural=Math.max(wrap.scrollHeight,wrap.getBoundingClientRect().height);
+  if(natural>available){
+    wrap.style.height=Math.ceil(natural)+'px';
+    wrap.style.transform='scale('+Math.min(1,available/natural).toFixed(4)+')';
+  }else wrap.style.height='100%';
+}
+function prepareGlyphs(pg){
+  if(pg.dataset.glyphs)return;
+  pg.dataset.glyphs='1';
+  // Wrap only Chinese characters; preserve headings, links and button semantics.
+  var walker=document.createTreeWalker(pg.querySelector('.wrap'),NodeFilter.SHOW_TEXT);
+  var nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);
+  nodes.forEach(function(node){
+    if(!/[\u3400-\u9fff]/.test(node.data))return;
+    var frag=document.createDocumentFragment();
+    var chars=Array.from(node.data);
+    for(var i=0;i<chars.length;i++){
+      var c=chars[i];
+      if(/[\u3400-\u9fff]/.test(c)){
+        var span=document.createElement('span');span.className='glyph';
+        while(i+1<chars.length&&/[，。！？；：、）》」』”’]/.test(chars[i+1]))c+=chars[++i];
+        span.textContent=c;frag.appendChild(span);
+      }else frag.appendChild(document.createTextNode(c));
+    }
+    node.replaceWith(frag);
+  });
+}
+var arrivalTimer=0,settleTimer=0;
+function animateArrival(pg,previous){
+  clearTimeout(arrivalTimer);clearTimeout(settleTimer);
+  pages.forEach(function(p){p.classList.remove('entering','settling');});
+  if(motion.matches)return;
+  pg.style.setProperty('--turn-dir',pages.indexOf(pg)>=previous?1:-1);
+  pg.querySelectorAll('.reveal').forEach(function(el,i){el.style.setProperty('--arrival-delay',Math.min(i*35,210)+'ms');});
+  void pg.offsetWidth;pg.classList.add('entering');
+  arrivalTimer=setTimeout(function(){
+    pg.classList.remove('entering');pg.classList.add('settling');
+    settleTimer=setTimeout(function(){pg.classList.remove('settling');},1150);
+  },930);
+}
+/* Pointer work runs once per frame and changes transforms only, never layout. */
+var hoverButton=null,pointerFrame=0,pointerEvent=null;
+function resetInteraction(){
+  if(hoverButton){hoverButton.style.removeProperty('--tilt-x');hoverButton.style.removeProperty('--tilt-y');hoverButton=null;}
+  if(activePg){activePg.style.removeProperty('--photo-x');activePg.style.removeProperty('--photo-y');}
+}
+document.addEventListener('pointermove',function(e){
+  if(e.pointerType!=='mouse'||motion.matches)return;
+  pointerEvent=e;if(pointerFrame)return;
+  pointerFrame=requestAnimationFrame(function(){
+    pointerFrame=0;var e=pointerEvent;if(!activePg)return;
+    activePg.style.setProperty('--photo-x',((e.clientX/innerWidth-.5)*7).toFixed(2)+'px');
+    activePg.style.setProperty('--photo-y',((e.clientY/innerHeight-.5)*7).toFixed(2)+'px');
+    var btn=e.target.closest('button');
+    if(hoverButton!==btn){if(hoverButton){hoverButton.style.removeProperty('--tilt-x');hoverButton.style.removeProperty('--tilt-y');}hoverButton=btn;}
+    if(btn){var r=btn.getBoundingClientRect();
+      btn.style.setProperty('--tilt-x',((.5-(e.clientY-r.top)/r.height)*5).toFixed(2)+'deg');
+      btn.style.setProperty('--tilt-y',(((e.clientX-r.left)/r.width-.5)*5).toFixed(2)+'deg');
+    }
+  });
+},{passive:true});
+document.documentElement.addEventListener('pointerleave',resetInteraction);
+
+/* ---------- one complete page is visible at a time ---------- */
 var warmTimer=0;
 function setActive(pg){
   if(pg===activePg)return;
+  var previous=pages.indexOf(activePg);
+  resetInteraction();
   activePg=pg;
   pages.forEach(function(p){
     var on=p===pg;p.classList.toggle('active',on);p.inert=!on;
     p.setAttribute('aria-hidden',on?'false':'true');
   });
+  prepareGlyphs(pg);
+  fitPage(pg);
+  animateArrival(pg,previous);
   pg.querySelectorAll('img').forEach(function(img){img.loading='eager';});
   resumeInk();
   var idx=pages.indexOf(pg);
@@ -583,45 +706,32 @@ function setActive(pg){
 function curIdx(){return Math.max(0,pages.indexOf(activePg));}
 function updateReading(){
   if(!activePg)setActive(pages[0]);
-  var extra=Math.max(0,activePg.scrollHeight-activePg.clientHeight);
-  var fraction=extra>0?Math.min(1,activePg.scrollTop/extra):0;
-  progressBar.style.width=((curIdx()+fraction)/(pages.length-1)*100)+'%';
+  progressBar.style.width=(curIdx()/(pages.length-1)*100)+'%';
 }
-pages.forEach(function(pg){pg.addEventListener('scroll',updateReading,{passive:true});});
 
-/* A wheel burst (including trackpad momentum) can turn at most one page.
-   A gesture used to read inside a long page cannot also leave that page. */
-var wheelUsed=false,wheelTotal=0,wheelQuiet=0;
+/* One wheel burst turns exactly one page, independent of content length. */
+var wheelUsed=false,wheelQuiet=0;
 deck.addEventListener('wheel',function(e){
   if(e.ctrlKey||Math.abs(e.deltaX)>Math.abs(e.deltaY))return;
+  e.preventDefault();if(!e.deltaY)return;
   clearTimeout(wheelQuiet);
-  wheelQuiet=setTimeout(function(){wheelUsed=false;wheelTotal=0;},240);
-  var pg=activePg,dy=e.deltaY*(e.deltaMode===1?16:e.deltaMode===2?pg.clientHeight:1);
-  var down=dy>0,canRead=down?pg.scrollTop+pg.clientHeight<pg.scrollHeight-2:pg.scrollTop>2;
-  if(canRead){wheelUsed=true;return;}
-  e.preventDefault();
-  if(wheelUsed||!dy)return;
-  if(wheelTotal*dy<0)wheelTotal=0;
-  wheelTotal+=dy;if(Math.abs(wheelTotal)<35)return;
+  wheelQuiet=setTimeout(function(){wheelUsed=false;},180);
+  if(wheelUsed)return;
   wheelUsed=true;
-  var idx=curIdx()+(down?1:-1);
+  var idx=curIdx()+(e.deltaY>0?1:-1);
   if(pages[idx])goToPage(pages[idx],false);
 },{passive:false});
 var touchStart=null;
 deck.addEventListener('touchstart',function(e){
   if(e.touches.length!==1){touchStart=null;return;}
-  var pg=activePg;
-  touchStart={x:e.touches[0].clientX,y:e.touches[0].clientY,pg:pg,
-    top:pg.scrollTop<=2,bottom:pg.scrollTop+pg.clientHeight>=pg.scrollHeight-2};
+  touchStart={x:e.touches[0].clientX,y:e.touches[0].clientY,pg:activePg};
 },{passive:true});
 deck.addEventListener('touchend',function(e){
   var start=touchStart;touchStart=null;
   if(!start||start.pg!==activePg||!e.changedTouches.length)return;
   var dy=start.y-e.changedTouches[0].clientY,dx=start.x-e.changedTouches[0].clientX;
   if(Math.abs(dy)<55||Math.abs(dx)>Math.abs(dy))return;
-  if((dy>0&&start.bottom)||(dy<0&&start.top)){
-    var idx=curIdx()+(dy>0?1:-1);if(pages[idx])goToPage(pages[idx],false);
-  }
+  var idx=curIdx()+(dy>0?1:-1);if(pages[idx])goToPage(pages[idx],false);
 },{passive:true});
 deck.addEventListener('touchcancel',function(){touchStart=null;},{passive:true});
 
@@ -649,19 +759,14 @@ dotsBox.addEventListener('keydown',function(e){
   else return;
   e.preventDefault();e.stopPropagation();dotEls[next].focus();goToPage(pages[next],false);
 });
-/* Each press advances one page or one reading step; holding a key does not skip pages. */
+/* Each press advances exactly one page; holding a key does not skip pages. */
 document.addEventListener('keydown',function(e){
   if(e.defaultPrevented||e.altKey||e.ctrlKey||e.metaKey||e.shiftKey)return;
   if(e.target.closest('button,a,input,select,textarea,[contenteditable="true"]'))return;
   var down=e.key==='ArrowDown'||e.key==='PageDown',up=e.key==='ArrowUp'||e.key==='PageUp';
   if(!down&&!up)return;
   e.preventDefault();if(e.repeat)return;
-  var pg=activePg,st=pg.scrollTop,max=Math.max(0,pg.scrollHeight-pg.clientHeight);
-  if((down&&st<max-2)||(up&&st>2)){
-    pg.scrollTo({top:Math.max(0,Math.min(max,st+(down?1:-1)*pg.clientHeight*.8)),behavior:scrollBehavior()});
-  }else{
-    var idx=curIdx()+(down?1:-1);if(pages[idx])goToPage(pages[idx],true);
-  }
+  var idx=curIdx()+(down?1:-1);if(pages[idx])goToPage(pages[idx],true);
 });
 
 /* ---------- TOC jumps : ink-ripple transition into a chapter ---------- */
@@ -698,7 +803,7 @@ setTimeout(function(){var h=document.getElementById('hint');if(h)h.style.opacity
 
 /* init first page */
 updateReading();
-document.fonts.ready.then(updateReading);
+document.fonts.ready.then(function(){fitPage(activePg);updateReading();});
 
 })();
 </script>
