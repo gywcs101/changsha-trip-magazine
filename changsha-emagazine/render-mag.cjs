@@ -9,7 +9,7 @@ const DIR=__dirname, OUT=path.join(DIR,'shots'); fs.mkdirSync(OUT,{recursive:tru
   const ctx=await browser.newContext({viewport:{width:1512,height:982},deviceScaleFactor:1.25});
   const page=await ctx.newPage();
   page.on('pageerror',e=>console.log('  PAGEERR',e.message));
-  await page.goto('file:///'+path.join(DIR,'index.html').replace(/\\/g,'/'),{waitUntil:'load',timeout:60000}).catch(e=>console.log('goto',e.message));
+  await page.goto('file:///'+path.join(DIR,'..','index.html').replace(/\\/g,'/'),{waitUntil:'load',timeout:60000}).catch(e=>console.log('goto',e.message));
   await page.evaluate(()=>document.fonts&&document.fonts.ready?document.fonts.ready:true).catch(()=>{});
   await page.waitForTimeout(1800);
   const n=await page.$$eval('.page',ps=>ps.length);
