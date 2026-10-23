@@ -15,8 +15,9 @@ const DIR=__dirname, OUT=path.join(DIR,'shots'); fs.mkdirSync(OUT,{recursive:tru
   const n=await page.$$eval('.page',ps=>ps.length);
   console.log('pages',n);
   for(let i=0;i<n;i++){
-    await page.evaluate(i=>{const ps=document.querySelectorAll('.page');document.getElementById('deck').scrollTo({top:ps[i].offsetTop});},i);
-    await page.waitForTimeout(1500);
+    await page.evaluate(i=>document.querySelectorAll('#dots button')[i].click(),i);
+    await page.locator('.page.active img').evaluateAll(imgs=>Promise.all(imgs.map(img=>img.decode().catch(()=>{}))));
+    await page.waitForTimeout(150);
     await page.screenshot({path:path.join(OUT,'p'+(i+1).toString().padStart(2,'0')+'.png')});
     console.log('  shot',i+1);
   }

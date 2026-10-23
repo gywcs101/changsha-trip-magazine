@@ -4,13 +4,10 @@
 <meta charset="utf-8">
 <title>山水洲城 · 长沙漫游志 Vol.01</title>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" media="print" onload="this.media='all'" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500&family=Playfair+Display:ital,wght@1,400&family=Inter:wght@300;400;500&family=IBM+Plex+Mono:wght@400&display=optional">
 <style>
 /* ============================================================
    山水洲城 · 长沙电子杂志   (Editorial Magazine × E-ink)
-   单文件：整屏翻页 + 滚动吸附 · 沉浸式动效 · 完整微调
+   单文件：逐页阅读 · 本页滚动 · 本地图像与系统字体
    ============================================================ */
 
 /* ---- 6 palettes (per-page via data-theme) ---- */
@@ -22,11 +19,11 @@
 [data-theme="midnight-ink"]{--paper:#0e0d0c;--paper-2:#1a1714;--ink:#ece2cf;--muted:#9a8c75;--line:rgba(236,226,207,.22);--accent:#d4a04a;--accent-soft:#3a2a14;--ink-rgb:236,226,207;--paper-rgb:14,13,12;--accent-rgb:212,160,74;}
 
 :root{
-  --serif-zh:"Noto Serif SC","Songti SC","STSong",serif;
-  --serif-en:"Playfair Display","Noto Serif SC",serif;
+  --serif-zh:"Songti SC","STSong","SimSun","Noto Serif CJK SC",serif;
+  --serif-en:Georgia,"Times New Roman",serif;
   --sans-zh:-apple-system,"PingFang SC","Microsoft YaHei UI",sans-serif;
-  --sans-en:"Inter",-apple-system,BlinkMacSystemFont,sans-serif;
-  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Consolas,monospace;
+  --sans-en:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --mono:ui-monospace,"SF Mono",Consolas,monospace;
 }
 
 *,*::before,*::after{box-sizing:border-box;}
@@ -34,9 +31,10 @@ html,body{margin:0;padding:0;height:100%;}
 body{background:#0b0b0d;font-family:var(--sans-zh);overflow:hidden;}
 
 /* ---- scroll-snap deck ---- */
-.emag{height:100vh;height:100dvh;overflow-y:scroll;scroll-snap-type:y proximity;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;}
+.emag{height:100vh;height:100dvh;overflow:hidden;}
 .emag::-webkit-scrollbar{width:0;height:0;}
-.page{position:relative;min-height:100vh;min-height:100dvh;scroll-snap-align:start;overflow:hidden;background:var(--paper);color:var(--ink);isolation:isolate;}
+.page{display:none;position:relative;height:100vh;height:100dvh;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;background:var(--paper);color:var(--ink);isolation:isolate;scrollbar-width:thin;}
+.page.active{display:block;}
 .wrap{position:relative;z-index:3;min-height:100vh;min-height:100dvh;width:100%;max-width:1180px;margin:0 auto;
   padding:clamp(40px,7vh,86px) clamp(28px,6vw,96px);display:flex;flex-direction:column;}
 
@@ -180,9 +178,9 @@ figure{margin:0;}
 .callout small{display:block;margin-top:14px;font-style:normal;font-family:var(--mono);font-size:clamp(11px,.9vw,18px);letter-spacing:.12em;color:var(--muted);}
 
 /* ===== reveal + char animation ===== */
-.reveal{opacity:0;transform:translateY(30px);filter:blur(6px);will-change:opacity,transform,filter;transition:opacity .85s cubic-bezier(.19,.7,.2,1),transform .85s cubic-bezier(.19,.7,.2,1),filter .85s;}
+.reveal{opacity:1;transform:none;}
 .reveal.is-in{opacity:1;transform:none;filter:none;}
-.ch{display:inline-block;opacity:0;transform:translateY(.5em) rotateX(46deg);transform-origin:bottom;transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1);}
+.ch{display:inline-block;opacity:1;}
 .ch.sp{width:.34em;}
 .charfx.is-in .ch{opacity:1;transform:none;}
 
@@ -257,7 +255,7 @@ figure{margin:0;}
 
   <!-- ============ P1 · 封面 · 杜甫江阁黄昏 (Midnight Ink) ============ -->
   <section class="page is-bleed" data-theme="midnight-ink" data-label="封面">
-    <div class="bleed"><img data-par src="杜甫江阁/d792ef180f1fee905dbe1dcb5202baa3.jpg" style="--op:center 60%" alt="杜甫江阁 黄昏剪影"></div>
+    <div class="bleed"><img width="1600" height="1200" data-par src="assets/images/杜甫江阁-d792ef180f1fee905dbe1dcb5202baa3.webp" srcset="assets/images/杜甫江阁-d792ef180f1fee905dbe1dcb5202baa3-640.webp 640w, assets/images/杜甫江阁-d792ef180f1fee905dbe1dcb5202baa3.webp 1600w" sizes="(max-width: 780px) 100vw, 70vw" decoding="async" loading="eager" fetchpriority="high" style="--op:center 60%" alt="杜甫江阁 黄昏剪影"></div>
     <div class="scrim top"></div><div class="scrim bottom"></div>
     <div class="wrap col between">
       <div class="issue-row reveal"><span>Vol.01</span><span class="dot"></span><span>2026 · 长沙</span><span class="dot"></span><span>山水洲城</span></div>
@@ -300,7 +298,7 @@ figure{margin:0;}
 
   <!-- ============ P3 · Ch.1 橘子洲头 · hero (Forest Ink) ============ -->
   <section class="page is-bleed" data-theme="forest-ink" data-label="橘子洲·一">
-    <div class="bleed"><img data-par src="橘子洲头/9eed0b1bdca5094c88edb49d9b1e6997.jpg" style="--op:center 30%" alt="青年毛泽东艺术雕塑"></div>
+    <div class="bleed"><img width="1600" height="1200" data-par src="assets/images/橘子洲头-9eed0b1bdca5094c88edb49d9b1e6997.webp" srcset="assets/images/橘子洲头-9eed0b1bdca5094c88edb49d9b1e6997-640.webp 640w, assets/images/橘子洲头-9eed0b1bdca5094c88edb49d9b1e6997.webp 1600w" sizes="(max-width: 780px) 100vw, 70vw" decoding="async" loading="lazy" style="--op:center 30%" alt="青年毛泽东艺术雕塑"></div>
     <div class="scrim top"></div><div class="scrim bottom"></div>
     <div class="wrap col between">
       <p class="kicker reveal">Chapter 01 · 橘子洲头</p>
@@ -319,7 +317,7 @@ figure{margin:0;}
     <div class="wrap col">
       <div class="issue-row reveal"><span>01 · 橘子洲头</span><span class="dot"></span><span>Orange Isle</span></div>
       <div class="split s-57 gap-l" style="flex:1 1 auto;align-content:center;margin-top:clamp(16px,3vh,36px)">
-        <figure class="frame r-34 reveal" data-par><img src="橘子洲头/05116682bd5cc8cbb6e7e02273b48af2.jpg" style="--op:center 30%" alt="毛泽东立像"></figure>
+        <figure class="frame r-34 reveal" data-par><img width="1200" height="1600" src="assets/images/橘子洲头-05116682bd5cc8cbb6e7e02273b48af2.webp" srcset="assets/images/橘子洲头-05116682bd5cc8cbb6e7e02273b48af2-640.webp 480w, assets/images/橘子洲头-05116682bd5cc8cbb6e7e02273b48af2.webp 1200w" sizes="(max-width: 780px) 100vw, 70vw" decoding="async" loading="lazy" style="--op:center 30%" alt="毛泽东立像"></figure>
         <div class="col gap-m">
           <h3 class="h-md reveal">五里长岛，<br>把湘江一分为二</h3>
           <div class="marginalia reveal">
@@ -331,13 +329,13 @@ figure{margin:0;}
           <div class="callout reveal" style="margin-top:6px">恰同学少年，风华正茂。<small>— 一座城的青春，被刻进了石头</small></div>
         </div>
       </div>
-      <figure class="frame r-169 reveal" data-par style="max-height:26vh;margin-top:auto"><img src="橘子洲头/51eb7d870cd904afce3027c71d03a415.jpg" style="--op:center 88%" alt="橘子洲头题字"></figure>
+      <figure class="frame r-169 reveal" data-par style="max-height:26vh;margin-top:auto"><img width="1600" height="1200" src="assets/images/橘子洲头-51eb7d870cd904afce3027c71d03a415.webp" srcset="assets/images/橘子洲头-51eb7d870cd904afce3027c71d03a415-640.webp 640w, assets/images/橘子洲头-51eb7d870cd904afce3027c71d03a415.webp 1600w" sizes="(max-width: 780px) 100vw, 70vw" decoding="async" loading="lazy" style="--op:center 88%" alt="橘子洲头题字"></figure>
     </div>
   </section>
 
   <!-- ============ P5 · Ch.2 国金中心 · hero (Indigo Porcelain) ============ -->
   <section class="page is-bleed" data-theme="indigo-porcelain" data-label="国金·一">
-    <div class="bleed"><img data-par src="国金大厦/ff39ef00e780bcadd51808c3f11c4f54.jpg" style="--op:center 50%" alt="国金中心 KAWS 雕塑"></div>
+    <div class="bleed"><img width="1600" height="1200" data-par src="assets/images/国金大厦-ff39ef00e780bcadd51808c3f11c4f54.webp" srcset="assets/images/国金大厦-ff39ef00e780bcadd51808c3f11c4f54-640.webp 640w, assets/images/国金大厦-ff39ef00e780bcadd51808c3f11c4f54.webp 1600w" sizes="(max-width: 780px) 100vw, 70vw" decoding="async" loading="lazy" style="--op:center 50%" alt="国金中心 KAWS 雕塑"></div>
     <div class="scrim top"></div>
     <div class="wrap col">
       <p class="kicker reveal">Chapter 02 · 国金中心 IFS</p>
@@ -364,14 +362,14 @@ figure{margin:0;}
             <div class="col gap-s"><span class="h-md" style="font-family:var(--sans-en);font-weight:300">7F</span><span class="label">艺术天台</span></div>
           </div>
         </div>
-        <figure class="frame r-34 reveal" data-par><img src="国金大厦/c5ea333533a0dc64c85b3549e0543191.jpg" style="--op:center 40%" alt="国金中心 白兔雕塑"></figure>
+        <figure class="frame r-34 reveal" data-par><img width="1200" height="1600" src="assets/images/国金大厦-c5ea333533a0dc64c85b3549e0543191.webp" srcset="assets/images/国金大厦-c5ea333533a0dc64c85b3549e0543191-640.webp 480w, assets/images/国金大厦-c5ea333533a0dc64c85b3549e0543191.webp 1200w" sizes="(max-width: 780px) 100vw, 70vw" decoding="async" loading="lazy" style="--op:center 40%" alt="国金中心 白兔雕塑"></figure>
       </div>
     </div>
   </section>
 
   <!-- ============ P7 · Ch.3 杜甫江阁 · hero (Midnight Ink) ============ -->
   <section class="page is-bleed" data-theme="midnight-ink" data-label="江阁·一">
-    <div class="bleed"><img data-par src="杜甫江阁/e6d87a41a33746ed86205fa609369b6e.jpg" style="--op:center 40%" alt="杜甫江阁 黄昏全景"></div>
+    <div class="bleed"><img width="1600" height="1200" data-par src="assets/images/杜甫江阁-e6d87a41a33746ed86205fa609369b6e.webp" srcset="assets/images/杜甫江阁-e6d87a41a33746ed86205fa609369b6e-640.webp 640w, assets/images/杜甫江阁-e6d87a41a33746ed86205fa609369b6e.webp 1600w" sizes="(max-width: 780px) 100vw, 70vw" decoding="async" loading="lazy" style="--op:center 40%" alt="杜甫江阁 黄昏全景"></div>
     <div class="scrim top"></div><div class="scrim bottom"></div>
     <div class="wrap col between">
       <p class="kicker reveal">Chapter 03 · 杜甫江阁</p>
@@ -398,9 +396,9 @@ figure{margin:0;}
           <p class="label reveal">飞檐 · 灯光秀 · 凭栏者</p>
         </div>
         <div class="wall reveal">
-          <figure class="big"><img data-par src="杜甫江阁/8c818d417feac05d4b8ab7802f0063ae.jpg" alt="湘江两岸灯光秀"></figure>
-          <figure><img src="杜甫江阁/2d28ecee20c92c4b88b2cb1e6b5329e0.jpg" alt="江阁飞檐金光"></figure>
-          <figure><img src="杜甫江阁/9f14db836879d0977169ab3093ce6379.jpg" alt="汉服少年凭栏"></figure>
+          <figure class="big"><img width="1200" height="1600" data-par src="assets/images/杜甫江阁-8c818d417feac05d4b8ab7802f0063ae.webp" srcset="assets/images/杜甫江阁-8c818d417feac05d4b8ab7802f0063ae-640.webp 480w, assets/images/杜甫江阁-8c818d417feac05d4b8ab7802f0063ae.webp 1200w" sizes="(max-width: 780px) 100vw, 70vw" decoding="async" loading="lazy" alt="湘江两岸灯光秀"></figure>
+          <figure><img width="1200" height="1600" src="assets/images/杜甫江阁-2d28ecee20c92c4b88b2cb1e6b5329e0.webp" srcset="assets/images/杜甫江阁-2d28ecee20c92c4b88b2cb1e6b5329e0-640.webp 480w, assets/images/杜甫江阁-2d28ecee20c92c4b88b2cb1e6b5329e0.webp 1200w" sizes="(max-width: 780px) 100vw, 70vw" decoding="async" loading="lazy" alt="江阁飞檐金光"></figure>
+          <figure><img width="1600" height="1200" src="assets/images/杜甫江阁-9f14db836879d0977169ab3093ce6379.webp" srcset="assets/images/杜甫江阁-9f14db836879d0977169ab3093ce6379-640.webp 640w, assets/images/杜甫江阁-9f14db836879d0977169ab3093ce6379.webp 1600w" sizes="(max-width: 780px) 100vw, 70vw" decoding="async" loading="lazy" alt="汉服少年凭栏"></figure>
         </div>
       </div>
     </div>
@@ -408,7 +406,7 @@ figure{margin:0;}
 
   <!-- ============ P9 · Ch.4 湖南博物院 · hero (Kraft Paper) ============ -->
   <section class="page is-bleed" data-theme="kraft-paper" data-label="博物院·一">
-    <div class="bleed"><img data-par src="马王堆/5119f388ea23fce76b5c94a87919fa1e.jpg" style="--op:center 45%" alt="西汉 彩绘凤鸟漆木架鼓"></div>
+    <div class="bleed"><img width="1600" height="1200" data-par src="assets/images/马王堆-5119f388ea23fce76b5c94a87919fa1e.webp" srcset="assets/images/马王堆-5119f388ea23fce76b5c94a87919fa1e-640.webp 640w, assets/images/马王堆-5119f388ea23fce76b5c94a87919fa1e.webp 1600w" sizes="(max-width: 780px) 100vw, 70vw" decoding="async" loading="lazy" style="--op:center 45%" alt="西汉 彩绘凤鸟漆木架鼓"></div>
     <div class="scrim left"></div>
     <div class="wrap col">
       <p class="kicker reveal">Chapter 04 · 湖南博物院 · 马王堆</p>
@@ -426,7 +424,7 @@ figure{margin:0;}
     <div class="wrap col">
       <div class="issue-row reveal"><span>04 · 湖南博物院</span><span class="dot"></span><span>Hunan Museum</span></div>
       <div class="split s-57 gap-l" style="flex:1 1 auto;align-content:center;margin-top:clamp(14px,2.4vh,30px)">
-        <figure class="frame r-34 reveal" data-par><img src="马王堆/5d63aa3aa35e3f496b09cbe85fa75e5e.jpg" style="--op:center 30%" alt="T形帛画"></figure>
+        <figure class="frame r-34 reveal" data-par><img width="1200" height="1600" src="assets/images/马王堆-5d63aa3aa35e3f496b09cbe85fa75e5e.webp" srcset="assets/images/马王堆-5d63aa3aa35e3f496b09cbe85fa75e5e-640.webp 480w, assets/images/马王堆-5d63aa3aa35e3f496b09cbe85fa75e5e.webp 1200w" sizes="(max-width: 780px) 100vw, 70vw" decoding="async" loading="lazy" style="--op:center 30%" alt="T形帛画"></figure>
         <div class="col gap-m">
           <h3 class="h-md reveal">一幅帛画，<br>画着她想象的来世</h3>
           <p class="body reveal">辛追夫人的 T 形帛画，自上而下画着天、人、地三界：日中有金乌，月里有蟾蜍，巨龙穿璧而过。这是两千年前的人，为死亡写下的浪漫。</p>
@@ -439,10 +437,10 @@ figure{margin:0;}
         </div>
       </div>
       <div class="toc-thumbs reveal" style="margin-top:auto">
-        <figure><img src="马王堆/bcfbdbaa6d6aa3ba9c9bafe6f2e904c2.jpg" alt="人面纹方鼎"></figure>
-        <figure><img src="马王堆/79fca3d36e803e035bea7f2f1936812d.jpg" alt="青铜礼器"></figure>
-        <figure><img src="马王堆/3d382bd137b708360759620eeb1eb826.jpg" alt="青铜剑"></figure>
-        <figure><img src="马王堆/2ad9999570d4f18952a43d278e055097.jpg" alt="辛追墓椁室"></figure>
+        <figure><img width="1200" height="1600" src="assets/images/马王堆-bcfbdbaa6d6aa3ba9c9bafe6f2e904c2.webp" srcset="assets/images/马王堆-bcfbdbaa6d6aa3ba9c9bafe6f2e904c2-640.webp 480w, assets/images/马王堆-bcfbdbaa6d6aa3ba9c9bafe6f2e904c2.webp 1200w" sizes="(max-width: 780px) 100vw, 70vw" decoding="async" loading="lazy" alt="人面纹方鼎"></figure>
+        <figure><img width="1200" height="1600" src="assets/images/马王堆-79fca3d36e803e035bea7f2f1936812d.webp" srcset="assets/images/马王堆-79fca3d36e803e035bea7f2f1936812d-640.webp 480w, assets/images/马王堆-79fca3d36e803e035bea7f2f1936812d.webp 1200w" sizes="(max-width: 780px) 100vw, 70vw" decoding="async" loading="lazy" alt="青铜礼器"></figure>
+        <figure><img width="1600" height="1200" src="assets/images/马王堆-3d382bd137b708360759620eeb1eb826.webp" srcset="assets/images/马王堆-3d382bd137b708360759620eeb1eb826-640.webp 640w, assets/images/马王堆-3d382bd137b708360759620eeb1eb826.webp 1600w" sizes="(max-width: 780px) 100vw, 70vw" decoding="async" loading="lazy" alt="青铜剑"></figure>
+        <figure><img width="1600" height="1200" src="assets/images/马王堆-2ad9999570d4f18952a43d278e055097.webp" srcset="assets/images/马王堆-2ad9999570d4f18952a43d278e055097-640.webp 640w, assets/images/马王堆-2ad9999570d4f18952a43d278e055097.webp 1600w" sizes="(max-width: 780px) 100vw, 70vw" decoding="async" loading="lazy" alt="辛追墓椁室"></figure>
       </div>
     </div>
   </section>
@@ -495,28 +493,12 @@ var motion=window.matchMedia('(prefers-reduced-motion: reduce)');
 function scrollBehavior(){return motion.matches?'instant':'smooth';}
 pages.forEach(function(pg,i){pg.id='page-'+(i+1);pg.tabIndex=-1;pg.setAttribute('aria-label',pg.dataset.label);});
 function goToPage(pg,focusPage){
-  if(focusPage)pg.focus({preventScroll:true});
-  deck.scrollTo({top:pg.offsetTop,behavior:scrollBehavior()});
+  var moveFocus=focusPage||(activePg&&activePg.contains(document.activeElement));
+  setActive(pg);
+  pg.scrollTop=0;
+  if(moveFocus)pg.focus({preventScroll:true});
+  updateReading();
 }
-
-/* ---------- char-fx wrapping ---------- */
-function wrapChars(el){
-  if(el.dataset.wrapped)return;
-  el.dataset.orig=el.innerHTML;
-  var html=el.innerHTML, out='', i=0;
-  // walk text, keep <br>/<span> tags intact-ish: split on tags
-  html.replace(/(<[^>]+>)|([^<]+)/g,function(m,tag,txt){
-    if(tag){out+=tag;return m;}
-    for(var k=0;k<txt.length;k++){var c=txt[k];
-      if(c===' '){out+='<span class="ch sp"></span>';}
-      else{out+='<span class="ch" style="transition-delay:'+(i*0.045)+'s">'+c+'</span>';i++;}
-    }
-    return m;
-  });
-  el.innerHTML=out; el.dataset.wrapped='1';
-}
-var charEls=[].slice.call(document.querySelectorAll('.charfx'));
-charEls.forEach(wrapChars);
 
 /* ---------- ink-flow canvas (single, follows active page) ---------- */
 var canvas=document.createElement('canvas');canvas.style.width='100%';canvas.style.height='100%';
@@ -571,68 +553,77 @@ motion.addEventListener('change',function(){
 document.addEventListener('visibilitychange',resumeInk);
 window.addEventListener('resize',function(){sizeInk();updateReading();});
 
-/* ---------- reading position, including pages taller than the viewport ---------- */
+/* ---------- one visible page, with scrolling inside long pages ---------- */
+var warmTimer=0;
 function setActive(pg){
   if(pg===activePg)return;
   activePg=pg;
-  pages.forEach(function(p){if(p!==pg)p.classList.remove('active');});
-  pg.classList.add('active');
-  resumeInk();
-  // reveal children with stagger
-  var revs=pg.querySelectorAll('.reveal');
-  revs.forEach(function(el,i){el.style.transitionDelay=(i*0.085)+'s';});
-  requestAnimationFrame(function(){
-    revs.forEach(function(el){el.classList.add('is-in');});
-    pg.querySelectorAll('.charfx').forEach(function(el){el.classList.add('is-in');});
+  pages.forEach(function(p){
+    var on=p===pg;p.classList.toggle('active',on);p.inert=!on;
+    p.setAttribute('aria-hidden',on?'false':'true');
   });
-  // update dots
+  pg.querySelectorAll('img').forEach(function(img){img.loading='eager';});
+  resumeInk();
   var idx=pages.indexOf(pg);
   dotEls.forEach(function(d,i){
     d.classList.toggle('on',i===idx);
     if(i===idx)d.setAttribute('aria-current','page');else d.removeAttribute('aria-current');
   });
+  clearTimeout(warmTimer);
+  // Fetch the next page's lead image only after the current images have decoded.
+  var ready=[].map.call(pg.querySelectorAll('img'),function(img){return img.decode().catch(function(){});});
+  Promise.all(ready).then(function(){
+    if(activePg!==pg)return;
+    warmTimer=setTimeout(function(){
+      if(activePg!==pg||!pages[idx+1])return;
+      var img=pages[idx+1].querySelector('img');if(img)img.loading='eager';
+    },400);
+  });
 }
-function curIdx(){
-  var probe=deck.scrollTop+Math.min(120,deck.clientHeight*.2),idx=0;
-  for(var i=1;i<pages.length;i++){if(pages[i].offsetTop<=probe)idx=i;else break;}
-  return idx;
-}
+function curIdx(){return Math.max(0,pages.indexOf(activePg));}
 function updateReading(){
-  setActive(pages[curIdx()]);
-  var max=deck.scrollHeight-deck.clientHeight;
-  progressBar.style.width=(max>0?deck.scrollTop/max*100:0)+'%';
+  if(!activePg)setActive(pages[0]);
+  var extra=Math.max(0,activePg.scrollHeight-activePg.clientHeight);
+  var fraction=extra>0?Math.min(1,activePg.scrollTop/extra):0;
+  progressBar.style.width=((curIdx()+fraction)/(pages.length-1)*100)+'%';
 }
+pages.forEach(function(pg){pg.addEventListener('scroll',updateReading,{passive:true});});
 
-/* ---------- parallax + progress (cached per-page parallax nodes) ---------- */
-var pagePar=pages.map(function(pg){
-  // pre-resolve each [data-par] element once: its parent .bleed status + depth + scale prefix
-  var els=[].slice.call(pg.querySelectorAll('[data-par]'));
-  return els.map(function(el){
-    var p=el.parentNode; var inBleed=el.classList.contains('bleed')||p.classList.contains('bleed');
-    var scale=el.tagName==='IMG'&&inBleed?'scale(1.12) ':'';
-    return {el:el,depth:inBleed?60:24,scale:scale};
-  });
-});
-var ticking=false;
-deck.addEventListener('scroll',function(){
-  if(ticking)return;ticking=true;
-  requestAnimationFrame(function(){
-    var vh=deck.clientHeight, st=deck.scrollTop;
-    // offsetTop forces layout; read once per frame into a fast array
-    for(var i=0;i<pages.length;i++){
-      var pg=pages[i], off=pg.offsetTop-st;
-      if(!motion.matches&&off>-1.15*vh&&off<1.15*vh){
-        var prog=off/vh, pars=pagePar[i];
-        for(var j=0;j<pars.length;j++){
-          var pr=pars[j];
-          pr.el.style.transform=pr.scale+'translate3d(0,'+(prog*pr.depth).toFixed(2)+'px,0)';
-        }
-      }
-    }
-    updateReading();
-    ticking=false;
-  });
+/* A wheel burst (including trackpad momentum) can turn at most one page.
+   A gesture used to read inside a long page cannot also leave that page. */
+var wheelUsed=false,wheelTotal=0,wheelQuiet=0;
+deck.addEventListener('wheel',function(e){
+  if(e.ctrlKey||Math.abs(e.deltaX)>Math.abs(e.deltaY))return;
+  clearTimeout(wheelQuiet);
+  wheelQuiet=setTimeout(function(){wheelUsed=false;wheelTotal=0;},240);
+  var pg=activePg,dy=e.deltaY*(e.deltaMode===1?16:e.deltaMode===2?pg.clientHeight:1);
+  var down=dy>0,canRead=down?pg.scrollTop+pg.clientHeight<pg.scrollHeight-2:pg.scrollTop>2;
+  if(canRead){wheelUsed=true;return;}
+  e.preventDefault();
+  if(wheelUsed||!dy)return;
+  if(wheelTotal*dy<0)wheelTotal=0;
+  wheelTotal+=dy;if(Math.abs(wheelTotal)<35)return;
+  wheelUsed=true;
+  var idx=curIdx()+(down?1:-1);
+  if(pages[idx])goToPage(pages[idx],false);
+},{passive:false});
+var touchStart=null;
+deck.addEventListener('touchstart',function(e){
+  if(e.touches.length!==1){touchStart=null;return;}
+  var pg=activePg;
+  touchStart={x:e.touches[0].clientX,y:e.touches[0].clientY,pg:pg,
+    top:pg.scrollTop<=2,bottom:pg.scrollTop+pg.clientHeight>=pg.scrollHeight-2};
 },{passive:true});
+deck.addEventListener('touchend',function(e){
+  var start=touchStart;touchStart=null;
+  if(!start||start.pg!==activePg||!e.changedTouches.length)return;
+  var dy=start.y-e.changedTouches[0].clientY,dx=start.x-e.changedTouches[0].clientX;
+  if(Math.abs(dy)<55||Math.abs(dx)>Math.abs(dy))return;
+  if((dy>0&&start.bottom)||(dy<0&&start.top)){
+    var idx=curIdx()+(dy>0?1:-1);if(pages[idx])goToPage(pages[idx],false);
+  }
+},{passive:true});
+deck.addEventListener('touchcancel',function(){touchStart=null;},{passive:true});
 
 /* ---------- page dots nav ---------- */
 var dotsBox=document.getElementById('dots'),dotEls=[];
@@ -649,6 +640,7 @@ var progressBar=document.getElementById('progressBar');
 /* Native buttons support Tab / Enter / Space; arrows move through the side nav. */
 dotsBox.addEventListener('keydown',function(e){
   var idx=dotEls.indexOf(document.activeElement);if(idx<0)return;
+  if(e.repeat){e.preventDefault();return;}
   var next=idx;
   if(e.key==='ArrowDown'||e.key==='ArrowRight')next=Math.min(dotEls.length-1,idx+1);
   else if(e.key==='ArrowUp'||e.key==='ArrowLeft')next=Math.max(0,idx-1);
@@ -657,44 +649,24 @@ dotsBox.addEventListener('keydown',function(e){
   else return;
   e.preventDefault();e.stopPropagation();dotEls[next].focus();goToPage(pages[next],false);
 });
-/* Long pages scroll in overlapping steps so keyboard readers do not skip content. */
+/* Each press advances one page or one reading step; holding a key does not skip pages. */
 document.addEventListener('keydown',function(e){
   if(e.defaultPrevented||e.altKey||e.ctrlKey||e.metaKey||e.shiftKey)return;
   if(e.target.closest('button,a,input,select,textarea,[contenteditable="true"]'))return;
   var down=e.key==='ArrowDown'||e.key==='PageDown',up=e.key==='ArrowUp'||e.key==='PageUp';
   if(!down&&!up)return;
-  e.preventDefault();
-  var idx=curIdx(),st=deck.scrollTop,vh=deck.clientHeight,pg=pages[idx],target;
-  if(down){
-    target=pg.offsetHeight>vh+2&&st+vh<pg.offsetTop+pg.offsetHeight-2
-      ?Math.min(st+vh*.8,pg.offsetTop+pg.offsetHeight-vh)
-      :pages[Math.min(pages.length-1,idx+1)].offsetTop;
+  e.preventDefault();if(e.repeat)return;
+  var pg=activePg,st=pg.scrollTop,max=Math.max(0,pg.scrollHeight-pg.clientHeight);
+  if((down&&st<max-2)||(up&&st>2)){
+    pg.scrollTo({top:Math.max(0,Math.min(max,st+(down?1:-1)*pg.clientHeight*.8)),behavior:scrollBehavior()});
   }else{
-    target=st>pg.offsetTop+2?Math.max(pg.offsetTop,st-vh*.8)
-      :Math.max(pages[Math.max(0,idx-1)].offsetTop,pg.offsetTop-vh);
+    var idx=curIdx()+(down?1:-1);if(pages[idx])goToPage(pages[idx],true);
   }
-  deck.scrollTo({top:target,behavior:scrollBehavior()});
 });
 
 /* ---------- TOC jumps : ink-ripple transition into a chapter ---------- */
 var veil=document.getElementById('inkVeil'),lbl=document.getElementById('inkLbl');
-var jumping=false;
-function jumpToChapter(pg,originX,originY){
-  if(motion.matches){goToPage(pg,true);return;}
-  if(jumping)return;jumping=true;
-  var label=(pg.dataset.label||'').replace(/·.*/,'').trim();   // "橘子洲·一" → "橘子洲"
-  lbl.innerHTML='<b>'+label+'</b><small>CHAPTER</small>';
-  veil.style.setProperty('--vx',(originX!=null?originX:50)+'%');
-  veil.style.setProperty('--vy',(originY!=null?originY:50)+'%');
-  // force reflow so the ring animation rewinds cleanly on rapid clicks
-  void veil.offsetWidth;
-  veil.classList.add('on');
-  // page scroll roughly tracks the veil : kick off just after the ink covers the screen
-  setTimeout(function(){goToPage(pg,true);},230);
-  // veil fades as the new chapter settles in
-  setTimeout(function(){veil.classList.remove('on');},760);
-  setTimeout(function(){jumping=false;},1000);
-}
+function jumpToChapter(pg){goToPage(pg,true);}
 [].slice.call(document.querySelectorAll('.toc-item[data-jump]')).forEach(function(btn){
   btn.addEventListener('click',function(e){
     var idx=parseInt(btn.dataset.jump,10);
