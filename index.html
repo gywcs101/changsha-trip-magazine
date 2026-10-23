@@ -31,10 +31,11 @@ html,body{margin:0;padding:0;height:100%;}
 body{background:#0b0b0d;font-family:var(--sans-zh);overflow:hidden;}
 
 /* ---- scroll-snap deck ---- */
-.emag{height:100vh;height:100dvh;overflow:hidden;}
+.emag{position:relative;height:100vh;height:100dvh;overflow:hidden;perspective:1600px;}
 .emag::-webkit-scrollbar{width:0;height:0;}
 .page{display:none;position:relative;height:100vh;height:100dvh;overflow:hidden;touch-action:pinch-zoom;background:var(--paper);color:var(--ink);isolation:isolate;}
-.page.active{display:block;}
+.page.active{display:block;z-index:2;}
+.page.leaving{display:block;position:absolute;inset:0;z-index:1;pointer-events:none;animation:sheetDepart 1.15s cubic-bezier(.22,.7,.18,1) both;}
 .wrap{position:relative;z-index:3;min-height:100vh;min-height:100dvh;width:100%;max-width:1180px;margin:0 auto;
   padding:clamp(40px,7vh,86px) clamp(28px,6vw,96px);display:flex;flex-direction:column;}
 
@@ -257,11 +258,18 @@ figure{margin:0;}
 .toc-thumbs figure{position:relative;height:100%;aspect-ratio:auto;}
 .toc-thumbs img{position:absolute;inset:0;}
 .wall{height:min(54vh,540px);}
-.page.entering .wrap{animation:pageArrive .45s ease-out both;}
-.page.entering .reveal{animation:textArrive .7s ease-out both;animation-delay:var(--arrival-delay,0ms);}
-.page.settling .charfx{animation:textSettle 1.1s ease-in-out both;}
-@keyframes pageArrive{from{opacity:.8;translate:0 calc(var(--turn-dir,1)*20px);}to{opacity:1;translate:0 0;}}
-@keyframes textArrive{from{opacity:.65;translate:0 8px;}to{opacity:1;translate:0 0;}}
+.page.entering{animation:sheetReveal 1.15s cubic-bezier(.22,.7,.18,1) both;}
+.page.entering .wrap{animation:pageArrive 1.25s cubic-bezier(.2,.65,.2,1) both;}
+.page.entering .reveal{animation:textArrive 1.05s cubic-bezier(.2,.65,.2,1) both;animation-delay:var(--arrival-delay,0ms);}
+.page.entering .bleed img{animation:photoArrive 1.45s cubic-bezier(.2,.65,.2,1) both;}
+.page.entering .frame img,.page.entering .wall img{animation:photoFocus 1.45s ease-out both;}
+.page.settling .charfx{animation:textSettle 1.5s ease-in-out both;}
+@keyframes sheetReveal{from{clip-path:var(--sheet-mask,inset(100% 0 0 0));transform:translateY(calc(var(--turn-dir,1)*5%));}to{clip-path:inset(0 0 0 0);transform:translateY(0);}}
+@keyframes sheetDepart{from{opacity:1;transform:scale(1) translateY(0);}to{opacity:.35;transform:scale(.975) translateY(calc(var(--turn-dir,1)*-5%));}}
+@keyframes pageArrive{from{opacity:.65;translate:0 calc(var(--turn-dir,1)*34px);}to{opacity:1;translate:0 0;}}
+@keyframes textArrive{from{opacity:.35;translate:0 15px;}to{opacity:1;translate:0 0;}}
+@keyframes photoArrive{from{transform:scale(1.19);}to{transform:scale(1.12);}}
+@keyframes photoFocus{from{transform:scale(1.045);}to{transform:scale(1);}}
 @keyframes textSettle{0%,100%{translate:0 0;}45%{translate:0 -2px;}}
 .glyph{display:inline-block;transition:transform .18s ease-out;color:inherit;}
 @media(hover:hover) and (pointer:fine){
@@ -540,11 +548,13 @@ var activePg=null;   // tracks currently-active page so setActive is idempotent
 var motion=window.matchMedia('(prefers-reduced-motion: reduce)');
 pages.forEach(function(pg,i){pg.id='page-'+(i+1);pg.tabIndex=-1;pg.setAttribute('aria-label',pg.dataset.label);});
 function goToPage(pg,focusPage){
+  if(turnBusy||pg===activePg)return false;
   var moveFocus=focusPage||(activePg&&activePg.contains(document.activeElement));
   setActive(pg);
   pg.scrollTop=0;
   if(moveFocus)pg.focus({preventScroll:true});
   updateReading();
+  return true;
 }
 
 /* ---------- ink-flow canvas (single, follows active page) ---------- */
@@ -592,9 +602,9 @@ function resumeInk(){
 }
 motion.addEventListener('change',function(){
   if(motion.matches){
-    clearTimeout(arrivalTimer);clearTimeout(settleTimer);
+    clearTimeout(arrivalTimer);clearTimeout(settleTimer);clearTimeout(departTimer);turnBusy=false;
     veil.classList.remove('on');resetInteraction();
-    pages.forEach(function(pg){pg.classList.remove('entering','settling');});
+    pages.forEach(function(pg){pg.classList.remove('entering','settling','leaving');});
     pages.forEach(function(pg){pg.querySelectorAll('[data-par]').forEach(function(el){el.style.transform='';});});
   }
   resumeInk();
@@ -635,18 +645,26 @@ function prepareGlyphs(pg){
     node.replaceWith(frag);
   });
 }
-var arrivalTimer=0,settleTimer=0;
+var arrivalTimer=0,settleTimer=0,departTimer=0,turnBusy=false;
 function animateArrival(pg,previous){
-  clearTimeout(arrivalTimer);clearTimeout(settleTimer);
-  pages.forEach(function(p){p.classList.remove('entering','settling');});
+  clearTimeout(arrivalTimer);clearTimeout(settleTimer);clearTimeout(departTimer);
+  pages.forEach(function(p){p.classList.remove('entering','settling','leaving');});
   if(motion.matches)return;
-  pg.style.setProperty('--turn-dir',pages.indexOf(pg)>=previous?1:-1);
-  pg.querySelectorAll('.reveal').forEach(function(el,i){el.style.setProperty('--arrival-delay',Math.min(i*35,210)+'ms');});
+  var direction=pages.indexOf(pg)>=previous?1:-1;
+  pg.style.setProperty('--turn-dir',direction);
+  pg.style.setProperty('--sheet-mask',direction>0?'inset(100% 0 0 0)':'inset(0 0 100% 0)');
+  if(previous>=0){
+    turnBusy=true;
+    var old=pages[previous];old.style.setProperty('--turn-dir',direction);old.classList.add('leaving');
+    departTimer=setTimeout(function(){old.classList.remove('leaving');},1170);
+  }
+  pg.querySelectorAll('.reveal').forEach(function(el,i){el.style.setProperty('--arrival-delay',Math.min(i*65,380)+'ms');});
   void pg.offsetWidth;pg.classList.add('entering');
   arrivalTimer=setTimeout(function(){
+    turnBusy=false;
     pg.classList.remove('entering');pg.classList.add('settling');
-    settleTimer=setTimeout(function(){pg.classList.remove('settling');},1150);
-  },930);
+    settleTimer=setTimeout(function(){pg.classList.remove('settling');},1550);
+  },1480);
 }
 /* Pointer work runs once per frame and changes transforms only, never layout. */
 var hoverButton=null,pointerFrame=0,pointerEvent=null;
@@ -750,6 +768,7 @@ var progressBar=document.getElementById('progressBar');
 /* Native buttons support Tab / Enter / Space; arrows move through the side nav. */
 dotsBox.addEventListener('keydown',function(e){
   var idx=dotEls.indexOf(document.activeElement);if(idx<0)return;
+  if(turnBusy){e.preventDefault();e.stopPropagation();return;}
   if(e.repeat){e.preventDefault();return;}
   var next=idx;
   if(e.key==='ArrowDown'||e.key==='ArrowRight')next=Math.min(dotEls.length-1,idx+1);
